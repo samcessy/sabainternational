@@ -160,8 +160,19 @@ return [
     |
     */
 
+    /*
+    |--------------------------------------------------------------------------
+    | Feature: Registration
+    |--------------------------------------------------------------------------
+    |
+    | Public self-registration is intentionally disabled. This is an internal
+    | nonprofit CMS with a small, fixed set of admin accounts, provisioned
+    | directly by a Super Administrator — not a self-service product signup.
+    | See docs/architecture/authorization-model.md §4.
+    |
+    */
+
     'features' => [
-        Features::registration(),
         Features::resetPasswords(),
         Features::emailVerification(),
         Features::twoFactorAuthentication([

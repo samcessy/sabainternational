@@ -1,11 +1,4 @@
 <?php
 
-use App\Models\TeamInvitation;
-use Illuminate\Support\Facades\Schedule;
-
-Schedule::call(function () {
-    TeamInvitation::query()
-        ->whereNotNull('expires_at')
-        ->where('expires_at', '<', now())
-        ->delete();
-})->daily()->description('Delete expired team invitations');
+// Scheduled jobs (sitemap regeneration, content-freshness reminders,
+// backup verification, etc.) are added here as those features are built.

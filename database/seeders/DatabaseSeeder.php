@@ -15,9 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
+        // The first Super Administrator can't be admin-invited (there's no
+        // admin yet to send the invitation) — it's seeded directly, matching
+        // docs/architecture/authorization-model.md §4's bootstrap case.
+        User::factory()->superAdministrator()->withTwoFactor()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
