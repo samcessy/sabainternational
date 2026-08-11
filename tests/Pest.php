@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\AdminRole;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -47,4 +49,13 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+/**
+ * A user with a confirmed admin role, ready to hit any admin-gated route
+ * without also needing to set up two-factor enrollment in every test.
+ */
+function actingAsAdmin(AdminRole $role = AdminRole::Editor): User
+{
+    return User::factory()->withTwoFactor()->create(['admin_role' => $role]);
 }

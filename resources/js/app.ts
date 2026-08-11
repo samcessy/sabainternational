@@ -9,8 +9,10 @@ import { initializeFlashToast } from '@/lib/flashToast';
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 // Public-facing marketing pages get PublicLayout (header/footer/skip-link).
-// Extend this list as more public pages are built (Stories, etc.); grouped
-// page types (programs/*, and later stories/*) use a prefix match instead.
+// Extend this list as more single-file public pages are built; grouped page
+// types (programs/*, stories/*, ...) use a prefix match instead so adding a
+// new page to an existing group can't silently fall through to the admin
+// AppLayout by default, as happened here before this comment existed.
 const publicPages = [
     'Home',
     'Give',
@@ -28,11 +30,14 @@ createInertiaApp({
         switch (true) {
             case publicPages.includes(name):
             case name.startsWith('programs/'):
+            case name.startsWith('stories/'):
                 return PublicLayout;
             case name.startsWith('auth/'):
                 return AuthLayout;
             case name.startsWith('settings/'):
                 return [AppLayout, SettingsLayout];
+            case name.startsWith('admin/'):
+                return AppLayout;
             default:
                 return AppLayout;
         }

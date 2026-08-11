@@ -3,14 +3,8 @@
 use App\Enums\AdminRole;
 use App\Enums\ImageConsentStatus;
 use App\Jobs\GenerateMediaVariants;
-use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
-
-function actingAsAdmin(AdminRole $role = AdminRole::Editor): User
-{
-    return User::factory()->withTwoFactor()->create(['admin_role' => $role]);
-}
 
 test('an editor can upload valid media and it dispatches variant generation', function () {
     Queue::fake();

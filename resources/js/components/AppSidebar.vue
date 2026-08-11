@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid } from '@lucide/vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import { BookOpen, FolderGit2, LayoutGrid, Newspaper } from '@lucide/vue';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
@@ -16,17 +16,31 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import type { NavItem } from '@/types';
+import { index as programsIndex } from '@/routes/admin/programs';
+import type { Auth, NavItem } from '@/types';
 
 const dashboardUrl = computed(() => dashboard().url);
+const page = usePage<{ auth: Auth }>();
 
-const mainNavItems = computed<NavItem[]>(() => [
-    {
-        title: 'Dashboard',
-        href: dashboardUrl.value,
-        icon: LayoutGrid,
-    },
-]);
+const mainNavItems = computed<NavItem[]>(() => {
+    const items: NavItem[] = [
+        {
+            title: 'Dashboard',
+            href: dashboardUrl.value,
+            icon: LayoutGrid,
+        },
+    ];
+
+    if (page.props.auth.permissions.includes('content:view')) {
+        items.push({
+            title: 'Programs',
+            href: programsIndex.url(),
+            icon: Newspaper,
+        });
+    }
+
+    return items;
+});
 
 const footerNavItems: NavItem[] = [
     {

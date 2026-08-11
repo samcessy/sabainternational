@@ -42,6 +42,12 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'auth' => [
                 'user' => $user,
+                // Derived here, not duplicated as a role->permission matrix
+                // in the frontend, so AdminRole::permissions() stays the
+                // single source of truth (saba.md §10.2).
+                'permissions' => $user?->admin_role !== null
+                    ? array_map(fn ($permission) => $permission->value, $user->admin_role->permissions())
+                    : [],
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];

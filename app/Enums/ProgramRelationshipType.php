@@ -12,4 +12,24 @@ enum ProgramRelationshipType: string
     case OfficialProgram = 'official_program';
     case IndependentPartner = 'independent_partner';
     case Unconfirmed = 'unconfirmed';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::OfficialProgram => 'Official Program',
+            self::IndependentPartner => 'Independent Partner',
+            self::Unconfirmed => 'Unconfirmed',
+        };
+    }
+
+    /**
+     * @return array<array{value: string, label: string}>
+     */
+    public static function options(): array
+    {
+        return collect(self::cases())
+            ->map(fn (self $type) => ['value' => $type->value, 'label' => $type->label()])
+            ->values()
+            ->all();
+    }
 }

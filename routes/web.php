@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutPageController;
+use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 use App\Http\Controllers\ContactPageController;
 use App\Http\Controllers\ContactSubmissionController;
 use App\Http\Controllers\DashboardController;
@@ -35,6 +36,10 @@ Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(fu
     Route::get('dashboard', DashboardController::class)->name('dashboard');
 
     Route::post('admin/media', [MediaController::class, 'store'])->name('media.store');
+
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('programs', AdminProgramController::class)->except('show');
+    });
 });
 
 // Anonymous public forms — no auth, rate-limited per

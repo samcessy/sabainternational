@@ -22,4 +22,15 @@ enum ProgramCategory: string
             self::YouthEconomicEmpowerment => 'Youth Economic Empowerment',
         };
     }
+
+    /**
+     * @return array<array{value: string, label: string}>
+     */
+    public static function options(): array
+    {
+        return collect(self::cases())
+            ->map(fn (self $category) => ['value' => $category->value, 'label' => $category->label()])
+            ->values()
+            ->all();
+    }
 }
