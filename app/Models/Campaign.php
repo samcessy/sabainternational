@@ -9,7 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property ContentStatus $status
+ * @property Carbon|null $start_date
+ * @property Carbon|null $end_date
+ */
 #[Fillable([
     'name', 'slug', 'description', 'goal_amount_cents', 'currency', 'start_date',
     'end_date', 'featured_image_media_id', 'impact_statement', 'suggested_amounts', 'status',

@@ -12,7 +12,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property ProgramCategory $category
+ * @property ProgramRelationshipType $relationship_type
+ * @property ContentStatus $status
+ * @property Carbon|null $published_at
+ */
 #[Fillable([
     'name', 'legal_name', 'slug', 'category', 'relationship_type', 'external_url',
     'founded_year', 'location', 'short_description', 'overview', 'what_happens_here',

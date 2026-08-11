@@ -16,11 +16,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use RuntimeException;
 
 /**
  * @property ContentStatus $status
  * @property ConsentStatus|null $consent_status
+ * @property StoryType $story_type
+ * @property Carbon|null $published_at
  */
 #[Fillable([
     'title', 'slug', 'excerpt', 'body', 'featured_image_media_id', 'author_id',

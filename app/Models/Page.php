@@ -9,7 +9,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property ContentStatus $status
+ * @property Carbon|null $published_at
+ */
 #[Fillable([
     'title', 'slug', 'body', 'seo_title', 'seo_description', 'og_image',
     'status', 'author_id', 'published_at',
