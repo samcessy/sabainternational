@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid, Newspaper } from '@lucide/vue';
+import {
+    BookOpen,
+    FolderGit2,
+    HandHeart,
+    LayoutGrid,
+    Mail,
+    Newspaper,
+    UserCheck,
+} from '@lucide/vue';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
@@ -16,7 +24,10 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { index as contactSubmissionsIndex } from '@/routes/admin/contact-submissions';
+import { index as partnershipInquiriesIndex } from '@/routes/admin/partnership-inquiries';
 import { index as programsIndex } from '@/routes/admin/programs';
+import { index as volunteerApplicationsIndex } from '@/routes/admin/volunteer-applications';
 import type { Auth, NavItem } from '@/types';
 
 const dashboardUrl = computed(() => dashboard().url);
@@ -37,6 +48,26 @@ const mainNavItems = computed<NavItem[]>(() => {
             href: programsIndex.url(),
             icon: Newspaper,
         });
+    }
+
+    if (page.props.auth.permissions.includes('engagement:view')) {
+        items.push(
+            {
+                title: 'Contact Messages',
+                href: contactSubmissionsIndex.url(),
+                icon: Mail,
+            },
+            {
+                title: 'Volunteer Applications',
+                href: volunteerApplicationsIndex.url(),
+                icon: UserCheck,
+            },
+            {
+                title: 'Partnership Inquiries',
+                href: partnershipInquiriesIndex.url(),
+                icon: HandHeart,
+            },
+        );
     }
 
     return items;

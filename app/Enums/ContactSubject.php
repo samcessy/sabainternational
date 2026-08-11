@@ -12,4 +12,15 @@ enum ContactSubject: string
     case Partnership = 'partnership';
     case Volunteer = 'volunteer';
     case Media = 'media';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::General => 'General',
+            self::Donation => 'Donation',
+            self::Partnership => 'Partnership',
+            self::Volunteer => 'Volunteer',
+            self::Media => 'Media',
+        };
+    }
 }

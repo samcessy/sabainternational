@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property SubmissionStatus $status
+ */
 #[Fillable(['name', 'email', 'details', 'status'])]
 class VolunteerApplication extends Model
 {
