@@ -38,8 +38,8 @@ const year = new Date().getFullYear();
                             >
                         </li>
                         <li>
-                            <a href="/#our-work" class="hover:text-foreground"
-                                >Our Work</a
+                            <Link href="/programs" class="hover:text-foreground"
+                                >Our Work</Link
                             >
                         </li>
                         <li>
@@ -61,8 +61,15 @@ const year = new Date().getFullYear();
                             >
                         </li>
                         <li>
-                            <a href="/#support" class="hover:text-foreground"
-                                >Partner With Us</a
+                            <Link
+                                href="/volunteer"
+                                class="hover:text-foreground"
+                                >Volunteer</Link
+                            >
+                        </li>
+                        <li>
+                            <Link href="/partner" class="hover:text-foreground"
+                                >Partner With Us</Link
                             >
                         </li>
                         <li>

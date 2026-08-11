@@ -10,7 +10,10 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\NewsletterSubscriptionController;
 use App\Http\Controllers\NewsletterUnsubscribeController;
 use App\Http\Controllers\PartnershipInquiryController;
+use App\Http\Controllers\PartnershipPageController;
+use App\Http\Controllers\ProgramPageController;
 use App\Http\Controllers\VolunteerApplicationController;
+use App\Http\Controllers\VolunteerPageController;
 use App\Http\Middleware\EnsureTwoFactorEnabled;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +23,10 @@ Route::get('give', [GivePageController::class, 'show'])->name('give.show');
 Route::get('give/thank-you', [GivePageController::class, 'thankYou'])->name('give.thank-you');
 Route::get('about', [AboutPageController::class, 'show'])->name('about.show');
 Route::get('contact', [ContactPageController::class, 'show'])->name('contact.show');
+Route::get('volunteer', [VolunteerPageController::class, 'show'])->name('volunteer.show');
+Route::get('partner', [PartnershipPageController::class, 'show'])->name('partnership.show');
+Route::get('programs', [ProgramPageController::class, 'index'])->name('programs.index');
+Route::get('programs/{slug}', [ProgramPageController::class, 'show'])->name('programs.show');
 
 Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');

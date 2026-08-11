@@ -54,35 +54,31 @@ const pillars = [
 const programs = [
     {
         name: 'New Dawn',
+        slug: 'new-dawn',
         category: 'Education',
-        foundedYear: 2006,
         description:
             'An educational center and mentorship program serving vulnerable children from Nairobi slum settlements, offering academics, counseling, spiritual guidance, and meals.',
-        externalUrl: 'https://newdawneducationcenter.newdawnkenya.com/',
     },
     {
         name: 'Bethel Kibera School',
+        slug: 'bethel-kibera-school',
         category: 'Education',
-        foundedYear: 2006,
         description:
             'Began as a small daycare in Kibera and has grown into a full primary school offering education, food assistance, and teen mentorship.',
-        externalUrl: 'https://bethelkiberaschool.com/',
     },
     {
         name: 'The Nest',
+        slug: 'the-nest',
         category: 'Shelter & Family Support',
-        foundedYear: 1997,
         description:
             'Provides safe housing for vulnerable children and works toward rehabilitation and family reintegration.',
-        externalUrl: 'https://www.thenesthome.org/en/childrens-home/',
     },
     {
         name: 'The Hunter Initiative',
+        slug: 'the-hunter-initiative',
         category: 'Youth Economic Empowerment',
-        foundedYear: null,
         description:
             'Delivers software development training to economically disadvantaged youth to strengthen their earning potential.',
-        externalUrl: null,
     },
 ];
 </script>
@@ -190,38 +186,37 @@ const programs = [
                 a child and family need to thrive.
             </p>
             <div class="mt-10 grid gap-6 sm:grid-cols-2">
-                <Card v-for="program in programs" :key="program.name">
-                    <CardHeader>
-                        <div class="flex items-center justify-between gap-2">
-                            <CardTitle>{{ program.name }}</CardTitle>
-                            <span
-                                class="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
+                <Link
+                    v-for="program in programs"
+                    :key="program.name"
+                    :href="`/programs/${program.slug}`"
+                    class="block"
+                >
+                    <Card class="h-full transition-shadow hover:shadow-md">
+                        <CardHeader>
+                            <div
+                                class="flex items-center justify-between gap-2"
                             >
-                                {{ program.category }}
-                            </span>
-                        </div>
-                    </CardHeader>
-                    <CardContent class="space-y-4">
-                        <p class="text-sm text-muted-foreground">
-                            {{ program.description }}
-                        </p>
-                        <a
-                            v-if="program.externalUrl"
-                            :href="program.externalUrl"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="text-sm font-medium text-primary hover:underline"
-                        >
-                            Visit {{ program.name }}&rsquo;s site &rarr;
-                        </a>
-                        <p
-                            v-else
-                            class="text-sm font-medium text-muted-foreground italic"
-                        >
-                            Program page coming soon
-                        </p>
-                    </CardContent>
-                </Card>
+                                <CardTitle>{{ program.name }}</CardTitle>
+                                <span
+                                    class="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
+                                >
+                                    {{ program.category }}
+                                </span>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <p class="text-sm text-muted-foreground">
+                                {{ program.description }}
+                            </p>
+                        </CardContent>
+                    </Card>
+                </Link>
+            </div>
+            <div class="mt-8 text-center">
+                <Button as-child variant="outline">
+                    <Link href="/programs">View All Programs</Link>
+                </Button>
             </div>
         </div>
     </section>
@@ -304,15 +299,31 @@ const programs = [
         <div class="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:px-8">
             <h2 class="text-2xl font-bold sm:text-3xl">Get Involved</h2>
             <p class="mt-4 text-primary-foreground/90">
-                Volunteering and partnership pages are coming very soon.
-                Subscribe below and we'll let you know the moment they're live —
-                or if you'd like to reach us in the meantime, our contact page
-                is on its way too.
+                There are a few ways to help — give, volunteer, or partner with
+                us. Or subscribe below to stay in the loop.
             </p>
 
-            <Button as-child variant="cta" size="lg" class="mt-6">
-                <Link href="/give">Give Now</Link>
-            </Button>
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+                <Button as-child variant="cta" size="lg">
+                    <Link href="/give">Give Now</Link>
+                </Button>
+                <Button
+                    as-child
+                    variant="outline"
+                    size="lg"
+                    class="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                >
+                    <Link href="/volunteer">Volunteer</Link>
+                </Button>
+                <Button
+                    as-child
+                    variant="outline"
+                    size="lg"
+                    class="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                >
+                    <Link href="/partner">Partner With Us</Link>
+                </Button>
+            </div>
 
             <Form
                 v-bind="subscribe.form()"

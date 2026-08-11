@@ -10,14 +10,14 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 
-// A mix of real pages (About, Contact) and anchors into Home's own
-// sections — anchors are prefixed with `/` so they resolve correctly from
-// any page, not just when already on `/`. Inertia's <Link> handles both
-// the same way. Our Work/Stories/Get Involved become dedicated pages as
-// they're built; saba.md §4.2 — keep navigation simple, not exhaustive.
+// A mix of real pages and anchors into Home's own sections — anchors are
+// prefixed with `/` so they resolve correctly from any page, not just when
+// already on `/`. Inertia's <Link> handles both the same way. Stories/Get
+// Involved become dedicated pages as they're built; saba.md §4.2 — keep
+// navigation simple, not exhaustive.
 const navItems = [
     { title: 'About', href: '/about' },
-    { title: 'Our Work', href: '/#our-work' },
+    { title: 'Our Work', href: '/programs' },
     { title: 'Stories', href: '/#stories' },
     { title: 'Get Involved', href: '/#support' },
     { title: 'Contact', href: '/contact' },
