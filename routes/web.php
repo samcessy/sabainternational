@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactSubmissionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\GivePageController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\NewsletterSubscriptionController;
 use App\Http\Controllers\NewsletterUnsubscribeController;
@@ -12,6 +13,9 @@ use App\Http\Middleware\EnsureTwoFactorEnabled;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Home')->name('home');
+
+Route::get('give', [GivePageController::class, 'show'])->name('give.show');
+Route::get('give/thank-you', [GivePageController::class, 'thankYou'])->name('give.thank-you');
 
 Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');

@@ -60,7 +60,7 @@ const navItems = [
                     size="sm"
                     class="hidden sm:inline-flex"
                 >
-                    <a href="/#support">Make a Difference</a>
+                    <Link href="/give">Make a Difference</Link>
                 </Button>
 
                 <Sheet>
@@ -91,7 +91,7 @@ const navItems = [
                             </a>
                         </nav>
                         <Button as-child variant="cta" class="mt-6 w-full">
-                            <a href="/#support">Make a Difference</a>
+                            <Link href="/give">Make a Difference</Link>
                         </Button>
                     </SheetContent>
                 </Sheet>

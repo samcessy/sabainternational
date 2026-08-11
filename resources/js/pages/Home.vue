@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form, Head } from '@inertiajs/vue3';
+import { Form, Head, Link } from '@inertiajs/vue3';
 import {
     Code2,
     GraduationCap,
@@ -108,7 +108,7 @@ const programs = [
             </h1>
             <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
                 <Button as-child variant="cta" size="lg">
-                    <a href="#support">Make a Difference</a>
+                    <Link href="/give">Make a Difference</Link>
                 </Button>
                 <Button
                     as-child
@@ -304,11 +304,15 @@ const programs = [
         <div class="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:px-8">
             <h2 class="text-2xl font-bold sm:text-3xl">Get Involved</h2>
             <p class="mt-4 text-primary-foreground/90">
-                Giving, volunteering, and partnership pages are coming very
-                soon. Subscribe below and we'll let you know the moment they're
-                live — or if you'd like to reach us in the meantime, our contact
-                page is on its way too.
+                Volunteering and partnership pages are coming very soon.
+                Subscribe below and we'll let you know the moment they're live —
+                or if you'd like to reach us in the meantime, our contact page
+                is on its way too.
             </p>
+
+            <Button as-child variant="cta" size="lg" class="mt-6">
+                <Link href="/give">Give Now</Link>
+            </Button>
 
             <Form
                 v-bind="subscribe.form()"

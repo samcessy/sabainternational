@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
+
 const year = new Date().getFullYear();
 </script>
 
@@ -56,8 +58,8 @@ const year = new Date().getFullYear();
                     </h2>
                     <ul class="mt-3 space-y-2 text-sm text-muted-foreground">
                         <li>
-                            <a href="/#support" class="hover:text-foreground"
-                                >Give</a
+                            <Link href="/give" class="hover:text-foreground"
+                                >Give</Link
                             >
                         </li>
                         <li>
