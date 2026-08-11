@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property ContactSubject $subject
+ * @property SubmissionStatus $status
+ */
 #[Fillable(['name', 'email', 'country', 'organization', 'subject', 'message', 'status'])]
 class ContactSubmission extends Model
 {

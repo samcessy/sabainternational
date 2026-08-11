@@ -34,11 +34,20 @@ class AppServiceProvider extends ServiceProvider
      * Public API rate limit — 60 req/min per IP, per
      * docs/architecture/api-architecture.md §4. There is no authenticated
      * tier yet since V1 has no token-based API consumers.
+     *
+     * Anonymous public forms (Contact, Newsletter, Volunteer, Partnership)
+     * share one limiter — 3 submissions per IP per hour, matching saba.md
+     * §23.2's contact-form figure exactly rather than inventing separate
+     * numbers for the other three forms.
      */
     protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->ip());
+        });
+
+        RateLimiter::for('public-forms', function (Request $request) {
+            return Limit::perHour(3)->by($request->ip());
         });
     }
 
