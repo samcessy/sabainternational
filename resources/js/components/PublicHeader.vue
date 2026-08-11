@@ -18,7 +18,7 @@ import {
 const navItems = [
     { title: 'About', href: '/about' },
     { title: 'Our Work', href: '/programs' },
-    { title: 'Stories', href: '/#stories' },
+    { title: 'Stories', href: '/stories' },
     { title: 'Get Involved', href: '/#support' },
     { title: 'Contact', href: '/contact' },
 ];

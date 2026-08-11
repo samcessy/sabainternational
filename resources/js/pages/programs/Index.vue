@@ -37,6 +37,7 @@ const categoryLabels: Record<string, string> = {
     </section>
 
     <section class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+        <h2 class="sr-only">All Programs</h2>
         <div class="grid gap-6 sm:grid-cols-2">
             <Link
                 v-for="program in programs"

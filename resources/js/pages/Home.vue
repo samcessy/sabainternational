@@ -249,6 +249,9 @@ const programs = [
                 from the young people and families we work alongside. Check back
                 soon, or subscribe below to hear about them first.
             </p>
+            <Button as-child variant="outline" class="mt-6">
+                <Link href="/stories">Browse Stories</Link>
+            </Button>
         </div>
     </section>
 
