@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactSubmissionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\NewsletterSubscriptionController;
 use App\Http\Controllers\NewsletterUnsubscribeController;
 use App\Http\Controllers\PartnershipInquiryController;
@@ -14,6 +15,8 @@ Route::inertia('/', 'Welcome')->name('home');
 
 Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
+
+    Route::post('admin/media', [MediaController::class, 'store'])->name('media.store');
 });
 
 // Anonymous public forms — no auth, rate-limited per
