@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property DonationFrequency $frequency
+ * @property DonationStatus $status
+ */
 #[Fillable([
     'supporter_id', 'campaign_id', 'program_id', 'amount_cents', 'currency',
     'frequency', 'anonymous', 'status', 'stripe_subscription_id',

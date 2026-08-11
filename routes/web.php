@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactSubmissionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DonationController;
 use App\Http\Controllers\NewsletterSubscriptionController;
 use App\Http\Controllers\NewsletterUnsubscribeController;
 use App\Http\Controllers\PartnershipInquiryController;
@@ -27,5 +28,10 @@ Route::middleware('throttle:public-forms')->group(function () {
 Route::get('newsletter/unsubscribe/{newsletterSubscriber}', NewsletterUnsubscribeController::class)
     ->middleware('signed')
     ->name('newsletter.unsubscribe');
+
+// saba.md §8.3 — max 5 donation-initiation attempts per IP per hour.
+Route::post('donations', [DonationController::class, 'store'])
+    ->middleware('throttle:donations')
+    ->name('donations.store');
 
 require __DIR__.'/settings.php';

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Payments\PaymentGatewayInterface;
+use App\Services\Payments\StripeGateway;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -18,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(PaymentGatewayInterface::class, StripeGateway::class);
     }
 
     /**
@@ -48,6 +50,13 @@ class AppServiceProvider extends ServiceProvider
 
         RateLimiter::for('public-forms', function (Request $request) {
             return Limit::perHour(3)->by($request->ip());
+        });
+
+        // saba.md §8.3 — donation-initiation rate limit, not applied to the
+        // Stripe webhook (that's signature-verified instead, see
+        // docs/architecture/payment-architecture.md §5).
+        RateLimiter::for('donations', function (Request $request) {
+            return Limit::perHour(5)->by($request->ip());
         });
     }
 
