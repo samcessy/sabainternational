@@ -190,3 +190,23 @@
         @apply bg-background text-foreground;
     }
 }
+
+/*
+ * saba.md §14.1 requires respecting prefers-reduced-motion. Applied globally
+ * rather than per-component since motion (tw-animate-css's animate-in/out,
+ * Radix slide/fade primitives used by Sheet, Select, Dialog, etc.) is
+ * introduced by shared ui/ primitives, not page-level code — a global
+ * near-zero-duration override is the standard, low-risk way to neutralize
+ * it for users who've opted out, without stripping the animations outright
+ * for everyone else.
+ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

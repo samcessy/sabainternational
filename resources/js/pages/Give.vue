@@ -237,6 +237,7 @@ onBeforeUnmount(() => {
                         v-for="value in suggestedAmounts"
                         :key="value"
                         type="button"
+                        class="min-h-11"
                         :variant="
                             !usingCustomAmount && amount === value
                                 ? 'default'
@@ -248,6 +249,7 @@ onBeforeUnmount(() => {
                     </Button>
                     <Button
                         type="button"
+                        class="min-h-11"
                         :variant="usingCustomAmount ? 'default' : 'outline'"
                         @click="selectCustom"
                     >
@@ -256,25 +258,37 @@ onBeforeUnmount(() => {
                 </div>
                 <Input
                     v-if="usingCustomAmount"
+                    id="custom-amount"
                     v-model="customAmount"
                     type="number"
                     min="1"
                     step="1"
                     placeholder="Enter amount"
                     class="mt-3"
+                    :aria-invalid="!!errors.amount_cents"
+                    :aria-describedby="
+                        errors.amount_cents ? 'amount_cents-error' : undefined
+                    "
                 />
-                <InputError :message="errors.amount_cents" />
+                <InputError
+                    id="amount_cents-error"
+                    :message="errors.amount_cents"
+                />
             </div>
 
             <div>
-                <Label>Frequency</Label>
+                <Label id="frequency-label">Frequency</Label>
                 <div
                     class="mt-2 grid grid-cols-2 gap-2"
                     role="radiogroup"
-                    aria-label="Donation frequency"
+                    aria-labelledby="frequency-label"
+                    :aria-describedby="
+                        errors.frequency ? 'frequency-error' : undefined
+                    "
                 >
                     <Button
                         type="button"
+                        class="min-h-11"
                         :variant="
                             frequency === 'one_time' ? 'default' : 'outline'
                         "
@@ -286,6 +300,7 @@ onBeforeUnmount(() => {
                     </Button>
                     <Button
                         type="button"
+                        class="min-h-11"
                         :variant="
                             frequency === 'monthly' ? 'default' : 'outline'
                         "
@@ -296,13 +311,20 @@ onBeforeUnmount(() => {
                         Monthly
                     </Button>
                 </div>
-                <InputError :message="errors.frequency" />
+                <InputError id="frequency-error" :message="errors.frequency" />
             </div>
 
             <div>
                 <Label for="designation">Designation</Label>
                 <Select v-model="programId">
-                    <SelectTrigger id="designation" class="mt-2 w-full">
+                    <SelectTrigger
+                        id="designation"
+                        class="mt-2 w-full"
+                        :aria-invalid="!!errors.program_id"
+                        :aria-describedby="
+                            errors.program_id ? 'program_id-error' : undefined
+                        "
+                    >
                         <SelectValue placeholder="General Fund" />
                     </SelectTrigger>
                     <SelectContent>
@@ -316,19 +338,35 @@ onBeforeUnmount(() => {
                         </SelectItem>
                     </SelectContent>
                 </Select>
-                <InputError :message="errors.program_id" />
+                <InputError
+                    id="program_id-error"
+                    :message="errors.program_id"
+                />
             </div>
 
             <div class="space-y-2">
                 <Label for="name">Name</Label>
-                <Input id="name" v-model="name" required />
-                <InputError :message="errors.name" />
+                <Input
+                    id="name"
+                    v-model="name"
+                    required
+                    :aria-invalid="!!errors.name"
+                    :aria-describedby="errors.name ? 'name-error' : undefined"
+                />
+                <InputError id="name-error" :message="errors.name" />
             </div>
 
             <div class="space-y-2">
                 <Label for="email">Email address</Label>
-                <Input id="email" v-model="email" type="email" required />
-                <InputError :message="errors.email" />
+                <Input
+                    id="email"
+                    v-model="email"
+                    type="email"
+                    required
+                    :aria-invalid="!!errors.email"
+                    :aria-describedby="errors.email ? 'email-error' : undefined"
+                />
+                <InputError id="email-error" :message="errors.email" />
             </div>
 
             <label
@@ -366,7 +404,12 @@ onBeforeUnmount(() => {
                 <Spinner v-if="paying" />
                 Complete Donation
             </Button>
-            <Button variant="ghost" class="w-full" @click="step = 'details'">
+            <Button
+                variant="ghost"
+                size="lg"
+                class="w-full"
+                @click="step = 'details'"
+            >
                 Back
             </Button>
         </div>

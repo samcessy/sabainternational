@@ -60,7 +60,7 @@ const navItems = [
                     as-child
                     variant="cta"
                     size="sm"
-                    class="hidden sm:inline-flex"
+                    class="hidden min-h-11 sm:inline-flex"
                 >
                     <Link href="/give">Make a Difference</Link>
                 </Button>
@@ -70,6 +70,7 @@ const navItems = [
                         <Button
                             variant="ghost"
                             size="icon"
+                            class="min-h-11 min-w-11"
                             aria-label="Open menu"
                         >
                             <Menu class="size-5" />

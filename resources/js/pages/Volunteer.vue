@@ -41,26 +41,57 @@ import { store } from '@/routes/volunteer';
 
             <div class="space-y-2">
                 <Label for="name">Name</Label>
-                <Input id="name" name="name" required />
-                <InputError :message="errors.name" />
+                <Input
+                    id="name"
+                    name="name"
+                    required
+                    :aria-invalid="!!errors.name"
+                    :aria-describedby="errors.name ? 'name-error' : undefined"
+                />
+                <InputError id="name-error" :message="errors.name" />
             </div>
 
             <div class="space-y-2">
                 <Label for="email">Email address</Label>
-                <Input id="email" name="email" type="email" required />
-                <InputError :message="errors.email" />
+                <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    :aria-invalid="!!errors.email"
+                    :aria-describedby="errors.email ? 'email-error' : undefined"
+                />
+                <InputError id="email-error" :message="errors.email" />
             </div>
 
             <div class="space-y-2">
                 <Label for="details">
                     What kind of volunteering are you interested in?
                 </Label>
-                <Textarea id="details" name="details" required rows="5" />
-                <InputError :message="errors.details" />
+                <Textarea
+                    id="details"
+                    name="details"
+                    required
+                    rows="5"
+                    :aria-invalid="!!errors.details"
+                    :aria-describedby="
+                        errors.details ? 'details-error' : undefined
+                    "
+                />
+                <InputError id="details-error" :message="errors.details" />
             </div>
 
             <div class="flex items-start gap-3">
-                <Checkbox id="consent" name="consent" required class="mt-0.5" />
+                <Checkbox
+                    id="consent"
+                    name="consent"
+                    required
+                    class="mt-0.5"
+                    :aria-invalid="!!errors.consent"
+                    :aria-describedby="
+                        errors.consent ? 'consent-error' : undefined
+                    "
+                />
                 <Label
                     for="consent"
                     class="text-sm font-normal text-muted-foreground"
@@ -69,7 +100,7 @@ import { store } from '@/routes/volunteer';
                     application.
                 </Label>
             </div>
-            <InputError :message="errors.consent" />
+            <InputError id="consent-error" :message="errors.consent" />
 
             <Button
                 type="submit"

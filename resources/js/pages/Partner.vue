@@ -45,20 +45,47 @@ import { store } from '@/routes/partnership';
                     id="organization_name"
                     name="organization_name"
                     required
+                    :aria-invalid="!!errors.organization_name"
+                    :aria-describedby="
+                        errors.organization_name
+                            ? 'organization_name-error'
+                            : undefined
+                    "
                 />
-                <InputError :message="errors.organization_name" />
+                <InputError
+                    id="organization_name-error"
+                    :message="errors.organization_name"
+                />
             </div>
 
             <div class="space-y-2">
                 <Label for="contact_name">Your Name</Label>
-                <Input id="contact_name" name="contact_name" required />
-                <InputError :message="errors.contact_name" />
+                <Input
+                    id="contact_name"
+                    name="contact_name"
+                    required
+                    :aria-invalid="!!errors.contact_name"
+                    :aria-describedby="
+                        errors.contact_name ? 'contact_name-error' : undefined
+                    "
+                />
+                <InputError
+                    id="contact_name-error"
+                    :message="errors.contact_name"
+                />
             </div>
 
             <div class="space-y-2">
                 <Label for="email">Email address</Label>
-                <Input id="email" name="email" type="email" required />
-                <InputError :message="errors.email" />
+                <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    :aria-invalid="!!errors.email"
+                    :aria-describedby="errors.email ? 'email-error' : undefined"
+                />
+                <InputError id="email-error" :message="errors.email" />
             </div>
 
             <div class="space-y-2">
@@ -66,12 +93,30 @@ import { store } from '@/routes/partnership';
                     >Tell us about your organization and interest in
                     partnering</Label
                 >
-                <Textarea id="details" name="details" required rows="5" />
-                <InputError :message="errors.details" />
+                <Textarea
+                    id="details"
+                    name="details"
+                    required
+                    rows="5"
+                    :aria-invalid="!!errors.details"
+                    :aria-describedby="
+                        errors.details ? 'details-error' : undefined
+                    "
+                />
+                <InputError id="details-error" :message="errors.details" />
             </div>
 
             <div class="flex items-start gap-3">
-                <Checkbox id="consent" name="consent" required class="mt-0.5" />
+                <Checkbox
+                    id="consent"
+                    name="consent"
+                    required
+                    class="mt-0.5"
+                    :aria-invalid="!!errors.consent"
+                    :aria-describedby="
+                        errors.consent ? 'consent-error' : undefined
+                    "
+                />
                 <Label
                     for="consent"
                     class="text-sm font-normal text-muted-foreground"
@@ -80,7 +125,7 @@ import { store } from '@/routes/partnership';
                     inquiry.
                 </Label>
             </div>
-            <InputError :message="errors.consent" />
+            <InputError id="consent-error" :message="errors.consent" />
 
             <Button
                 type="submit"

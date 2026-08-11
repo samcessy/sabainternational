@@ -60,33 +60,72 @@ const subjects = [
 
             <div class="space-y-2">
                 <Label for="name">Name</Label>
-                <Input id="name" name="name" required />
-                <InputError :message="errors.name" />
+                <Input
+                    id="name"
+                    name="name"
+                    required
+                    :aria-invalid="!!errors.name"
+                    :aria-describedby="errors.name ? 'name-error' : undefined"
+                />
+                <InputError id="name-error" :message="errors.name" />
             </div>
 
             <div class="space-y-2">
                 <Label for="email">Email address</Label>
-                <Input id="email" name="email" type="email" required />
-                <InputError :message="errors.email" />
+                <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    :aria-invalid="!!errors.email"
+                    :aria-describedby="errors.email ? 'email-error' : undefined"
+                />
+                <InputError id="email-error" :message="errors.email" />
             </div>
 
             <div class="grid gap-5 sm:grid-cols-2">
                 <div class="space-y-2">
                     <Label for="country">Country (optional)</Label>
-                    <Input id="country" name="country" />
-                    <InputError :message="errors.country" />
+                    <Input
+                        id="country"
+                        name="country"
+                        :aria-invalid="!!errors.country"
+                        :aria-describedby="
+                            errors.country ? 'country-error' : undefined
+                        "
+                    />
+                    <InputError id="country-error" :message="errors.country" />
                 </div>
                 <div class="space-y-2">
                     <Label for="organization">Organization (optional)</Label>
-                    <Input id="organization" name="organization" />
-                    <InputError :message="errors.organization" />
+                    <Input
+                        id="organization"
+                        name="organization"
+                        :aria-invalid="!!errors.organization"
+                        :aria-describedby="
+                            errors.organization
+                                ? 'organization-error'
+                                : undefined
+                        "
+                    />
+                    <InputError
+                        id="organization-error"
+                        :message="errors.organization"
+                    />
                 </div>
             </div>
 
             <div class="space-y-2">
                 <Label for="subject">Subject</Label>
                 <Select name="subject">
-                    <SelectTrigger id="subject" class="w-full">
+                    <SelectTrigger
+                        id="subject"
+                        class="w-full"
+                        :aria-invalid="!!errors.subject"
+                        :aria-describedby="
+                            errors.subject ? 'subject-error' : undefined
+                        "
+                    >
                         <SelectValue placeholder="Choose a topic" />
                     </SelectTrigger>
                     <SelectContent>
@@ -99,17 +138,35 @@ const subjects = [
                         </SelectItem>
                     </SelectContent>
                 </Select>
-                <InputError :message="errors.subject" />
+                <InputError id="subject-error" :message="errors.subject" />
             </div>
 
             <div class="space-y-2">
                 <Label for="message">Message</Label>
-                <Textarea id="message" name="message" required rows="5" />
-                <InputError :message="errors.message" />
+                <Textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows="5"
+                    :aria-invalid="!!errors.message"
+                    :aria-describedby="
+                        errors.message ? 'message-error' : undefined
+                    "
+                />
+                <InputError id="message-error" :message="errors.message" />
             </div>
 
             <div class="flex items-start gap-3">
-                <Checkbox id="consent" name="consent" required class="mt-0.5" />
+                <Checkbox
+                    id="consent"
+                    name="consent"
+                    required
+                    class="mt-0.5"
+                    :aria-invalid="!!errors.consent"
+                    :aria-describedby="
+                        errors.consent ? 'consent-error' : undefined
+                    "
+                />
                 <Label
                     for="consent"
                     class="text-sm font-normal text-muted-foreground"
@@ -117,7 +174,7 @@ const subjects = [
                     I agree to Saba International contacting me.
                 </Label>
             </div>
-            <InputError :message="errors.consent" />
+            <InputError id="consent-error" :message="errors.consent" />
 
             <Button
                 type="submit"
