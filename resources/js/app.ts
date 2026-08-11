@@ -10,7 +10,14 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 // Public-facing marketing pages get PublicLayout (header/footer/skip-link).
 // Extend this list as more public pages are built (Programs, Stories, etc.).
-const publicPages = ['Home', 'Give', 'GiveThankYou'];
+const publicPages = [
+    'Home',
+    'Give',
+    'GiveThankYou',
+    'About',
+    'Contact',
+    'Error',
+];
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),

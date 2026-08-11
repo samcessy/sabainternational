@@ -10,15 +10,17 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 
-// Anchor links into Home's own sections — prefixed with `/` so they
-// resolve correctly from any page, not just when already on `/`.
-// Real dedicated pages (Our Work, Get Involved, etc.) replace these as
+// A mix of real pages (About, Contact) and anchors into Home's own
+// sections — anchors are prefixed with `/` so they resolve correctly from
+// any page, not just when already on `/`. Inertia's <Link> handles both
+// the same way. Our Work/Stories/Get Involved become dedicated pages as
 // they're built; saba.md §4.2 — keep navigation simple, not exhaustive.
 const navItems = [
+    { title: 'About', href: '/about' },
     { title: 'Our Work', href: '/#our-work' },
-    { title: 'Where We Work', href: '/#where-we-work' },
     { title: 'Stories', href: '/#stories' },
     { title: 'Get Involved', href: '/#support' },
+    { title: 'Contact', href: '/contact' },
 ];
 </script>
 
@@ -43,14 +45,14 @@ const navItems = [
             </Link>
 
             <nav class="hidden items-center gap-8 lg:flex" aria-label="Primary">
-                <a
+                <Link
                     v-for="item in navItems"
                     :key="item.title"
                     :href="item.href"
                     class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                 >
                     {{ item.title }}
-                </a>
+                </Link>
             </nav>
 
             <div class="flex items-center gap-2">
@@ -81,14 +83,14 @@ const navItems = [
                             class="mt-6 flex flex-col gap-1"
                             aria-label="Primary"
                         >
-                            <a
+                            <Link
                                 v-for="item in navItems"
                                 :key="item.title"
                                 :href="item.href"
                                 class="rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                             >
                                 {{ item.title }}
-                            </a>
+                            </Link>
                         </nav>
                         <Button as-child variant="cta" class="mt-6 w-full">
                             <Link href="/give">Make a Difference</Link>

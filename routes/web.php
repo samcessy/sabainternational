@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AboutPageController;
+use App\Http\Controllers\ContactPageController;
 use App\Http\Controllers\ContactSubmissionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonationController;
@@ -16,6 +18,8 @@ Route::inertia('/', 'Home')->name('home');
 
 Route::get('give', [GivePageController::class, 'show'])->name('give.show');
 Route::get('give/thank-you', [GivePageController::class, 'thankYou'])->name('give.thank-you');
+Route::get('about', [AboutPageController::class, 'show'])->name('about.show');
+Route::get('contact', [ContactPageController::class, 'show'])->name('contact.show');
 
 Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');

@@ -33,15 +33,13 @@ const year = new Date().getFullYear();
                     </h2>
                     <ul class="mt-3 space-y-2 text-sm text-muted-foreground">
                         <li>
-                            <a href="/#our-work" class="hover:text-foreground"
-                                >Our Work</a
+                            <Link href="/about" class="hover:text-foreground"
+                                >About</Link
                             >
                         </li>
                         <li>
-                            <a
-                                href="/#where-we-work"
-                                class="hover:text-foreground"
-                                >Where We Work</a
+                            <a href="/#our-work" class="hover:text-foreground"
+                                >Our Work</a
                             >
                         </li>
                         <li>
@@ -77,11 +75,27 @@ const year = new Date().getFullYear();
 
                 <div>
                     <h2 class="text-sm font-semibold text-foreground">Legal</h2>
-                    <p class="mt-3 text-sm text-muted-foreground">
-                        Governance and policy documents (privacy, safeguarding,
-                        financial transparency) are in progress and will be
-                        published here.
-                    </p>
+                    <ul class="mt-3 space-y-2 text-sm text-muted-foreground">
+                        <li>
+                            <Link
+                                href="/about#governance"
+                                class="hover:text-foreground"
+                                >Governance</Link
+                            >
+                        </li>
+                        <li>
+                            <Link
+                                href="/about#financial-transparency"
+                                class="hover:text-foreground"
+                                >Financial Transparency</Link
+                            >
+                        </li>
+                        <li>
+                            <Link href="/contact" class="hover:text-foreground"
+                                >Contact</Link
+                            >
+                        </li>
+                    </ul>
                 </div>
             </div>
 
@@ -93,8 +107,12 @@ const year = new Date().getFullYear();
                 </p>
                 <p class="max-w-xl">
                     This site is being built to meet WCAG 2.2 AA accessibility
-                    guidelines. If you encounter a barrier using it, please let
-                    us know once our contact channel is live.
+                    guidelines. If you encounter a barrier using it, please
+                    <Link
+                        href="/contact"
+                        class="underline hover:text-foreground"
+                        >let us know</Link
+                    >.
                 </p>
             </div>
         </div>
