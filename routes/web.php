@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ContactSubmissionController as AdminContactSubmis
 use App\Http\Controllers\Admin\PartnershipInquiryController as AdminPartnershipInquiryController;
 use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 use App\Http\Controllers\Admin\StoryController as AdminStoryController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\VolunteerApplicationController as AdminVolunteerApplicationController;
 use App\Http\Controllers\ContactPageController;
 use App\Http\Controllers\ContactSubmissionController;
@@ -47,6 +48,8 @@ Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(fu
         Route::resource('contact-submissions', AdminContactSubmissionController::class)->only(['index', 'update', 'destroy']);
         Route::resource('volunteer-applications', AdminVolunteerApplicationController::class)->only(['index', 'update', 'destroy']);
         Route::resource('partnership-inquiries', AdminPartnershipInquiryController::class)->only(['index', 'update', 'destroy']);
+        Route::resource('users', AdminUserController::class)->except(['show']);
+        Route::post('users/{user}/send-password-reset', [AdminUserController::class, 'sendPasswordReset'])->name('users.send-password-reset');
     });
 });
 

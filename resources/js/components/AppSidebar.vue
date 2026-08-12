@@ -9,6 +9,7 @@ import {
     Newspaper,
     NotebookText,
     UserCheck,
+    Users,
 } from '@lucide/vue';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
@@ -29,6 +30,7 @@ import { index as contactSubmissionsIndex } from '@/routes/admin/contact-submiss
 import { index as partnershipInquiriesIndex } from '@/routes/admin/partnership-inquiries';
 import { index as programsIndex } from '@/routes/admin/programs';
 import { index as storiesIndex } from '@/routes/admin/stories';
+import { index as usersIndex } from '@/routes/admin/users';
 import { index as volunteerApplicationsIndex } from '@/routes/admin/volunteer-applications';
 import type { Auth, NavItem } from '@/types';
 
@@ -82,6 +84,20 @@ const mainNavItems = computed<NavItem[]>(() => {
     return items;
 });
 
+const systemNavItems = computed<NavItem[]>(() => {
+    const items: NavItem[] = [];
+
+    if (page.props.auth.permissions.includes('system:manage-users')) {
+        items.push({
+            title: 'Users',
+            href: usersIndex.url(),
+            icon: Users,
+        });
+    }
+
+    return items;
+});
+
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
@@ -112,6 +128,11 @@ const footerNavItems: NavItem[] = [
 
         <SidebarContent>
             <NavMain :items="mainNavItems" />
+            <NavMain
+                v-if="systemNavItems.length > 0"
+                :items="systemNavItems"
+                label="System"
+            />
         </SidebarContent>
 
         <SidebarFooter>
