@@ -18,4 +18,30 @@ enum StoryType: string
     case FounderStory = 'founder_story';
     case YouthStory = 'youth_story';
     case CommunityStory = 'community_story';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::StoryOfChange => 'Story of Change',
+            self::ProgramUpdate => 'Program Update',
+            self::News => 'News',
+            self::VolunteerStory => 'Volunteer Story',
+            self::DonorStory => 'Donor Story',
+            self::PartnerStory => 'Partner Story',
+            self::FounderStory => "Founder's Story",
+            self::YouthStory => 'Youth Story',
+            self::CommunityStory => 'Community Story',
+        };
+    }
+
+    /**
+     * @return array<array{value: string, label: string}>
+     */
+    public static function options(): array
+    {
+        return collect(self::cases())
+            ->map(fn (self $type) => ['value' => $type->value, 'label' => $type->label()])
+            ->values()
+            ->all();
+    }
 }

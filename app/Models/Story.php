@@ -22,7 +22,12 @@ use RuntimeException;
 /**
  * @property ContentStatus $status
  * @property ConsentStatus|null $consent_status
+ * @property ImageConsentStatus|null $image_consent
+ * @property SensitiveContentClassification $sensitive_content_classification
+ * @property ApprovalStage $approval_stage
  * @property StoryType $story_type
+ * @property bool $anonymity_requested
+ * @property bool $featured
  * @property Carbon|null $published_at
  */
 #[Fillable([

@@ -7,6 +7,7 @@ import {
     LayoutGrid,
     Mail,
     Newspaper,
+    NotebookText,
     UserCheck,
 } from '@lucide/vue';
 import { computed } from 'vue';
@@ -27,6 +28,7 @@ import { dashboard } from '@/routes';
 import { index as contactSubmissionsIndex } from '@/routes/admin/contact-submissions';
 import { index as partnershipInquiriesIndex } from '@/routes/admin/partnership-inquiries';
 import { index as programsIndex } from '@/routes/admin/programs';
+import { index as storiesIndex } from '@/routes/admin/stories';
 import { index as volunteerApplicationsIndex } from '@/routes/admin/volunteer-applications';
 import type { Auth, NavItem } from '@/types';
 
@@ -43,11 +45,18 @@ const mainNavItems = computed<NavItem[]>(() => {
     ];
 
     if (page.props.auth.permissions.includes('content:view')) {
-        items.push({
-            title: 'Programs',
-            href: programsIndex.url(),
-            icon: Newspaper,
-        });
+        items.push(
+            {
+                title: 'Programs',
+                href: programsIndex.url(),
+                icon: Newspaper,
+            },
+            {
+                title: 'Stories',
+                href: storiesIndex.url(),
+                icon: NotebookText,
+            },
+        );
     }
 
     if (page.props.auth.permissions.includes('engagement:view')) {
