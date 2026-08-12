@@ -9,9 +9,9 @@
 
 @theme inline {
     --font-sans:
-        Instrument Sans, ui-sans-serif, system-ui, sans-serif,
-        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-        'Noto Color Emoji';
+        Nunito, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-heading: 'Averia Serif Libre', ui-serif, Georgia, serif;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -86,25 +86,27 @@
     body,
     html {
         --font-sans:
-            'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
-            'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-            'Noto Color Emoji';
+            Nunito, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+            'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     }
 }
 
 :root {
     /*
-     * Saba International brand tokens — a starting point, not a final,
-     * stakeholder-approved design system (saba.md's Phase 2/3 wireframe and
-     * high-fidelity design steps were skipped in favor of moving straight
-     * to architecture/backend). Deep teal (trust, calm, health/education
-     * association) is primary. `--accent` keeps shadcn's structural role —
-     * a subtle hover/highlight tone used pervasively by dropdown menus,
-     * ghost buttons, etc. — it is NOT the brand accent color. The bold
-     * terracotta used sparingly for prominent CTAs like "Donate" lives in
-     * its own `--cta` token instead, so it doesn't leak into every hover
-     * state across the admin dashboard. Revisit with real stakeholder/
-     * brand input before launch.
+     * Saba International brand tokens, matched to the live site's actual
+     * palette (sabainternational.org's compiled CSS: saba-blue #184F8F is
+     * the nav/heading brand color, saba-green #78E471 is the "Get
+     * Involved"/"Donate" CTA button color). `--accent` keeps shadcn's
+     * structural role — a subtle hover/highlight tone used pervasively by
+     * dropdown menus, ghost buttons, etc. — it is NOT the brand accent
+     * color, so the green CTA doesn't leak into every hover state across
+     * the admin dashboard.
+     *
+     * One deliberate deviation from the live site: its CTA buttons pair
+     * white text on that same green, which is a ~1.6:1 contrast ratio —
+     * badly fails WCAG AA (saba.md §14 requires 4.5:1). `--cta-foreground`
+     * uses the brand's own dark navy instead (6.56:1), keeping the
+     * authentic brand green without repeating that accessibility bug.
      */
     --background: hsl(30 25% 98%);
     --foreground: hsl(200 15% 12%);
@@ -112,21 +114,21 @@
     --card-foreground: hsl(200 15% 12%);
     --popover: hsl(0 0% 100%);
     --popover-foreground: hsl(200 15% 12%);
-    --primary: hsl(189 58% 23%);
+    --primary: hsl(212 71% 33%);
     --primary-foreground: hsl(0 0% 100%);
     --secondary: hsl(30 20% 95%);
-    --secondary-foreground: hsl(189 40% 18%);
+    --secondary-foreground: hsl(212 50% 22%);
     --muted: hsl(30 15% 94%);
     --muted-foreground: hsl(200 10% 40%);
     --accent: hsl(30 20% 93%);
-    --accent-foreground: hsl(189 40% 18%);
-    --cta: hsl(24 74% 40%);
-    --cta-foreground: hsl(0 0% 100%);
+    --accent-foreground: hsl(212 50% 22%);
+    --cta: hsl(116 68% 67%);
+    --cta-foreground: hsl(212 100% 26%);
     --destructive: hsl(0 72% 42%);
     --destructive-foreground: hsl(0 0% 98%);
     --border: hsl(30 15% 88%);
     --input: hsl(30 15% 88%);
-    --ring: hsl(189 58% 23%);
+    --ring: hsl(212 71% 33%);
     --chart-1: hsl(12 76% 61%);
     --chart-2: hsl(173 58% 39%);
     --chart-3: hsl(197 37% 24%);
@@ -151,7 +153,7 @@
     --card-foreground: hsl(30 15% 95%);
     --popover: hsl(200 18% 11%);
     --popover-foreground: hsl(30 15% 95%);
-    --primary: hsl(189 45% 55%);
+    --primary: hsl(199 100% 50%);
     --primary-foreground: hsl(200 20% 8%);
     --secondary: hsl(200 15% 16%);
     --secondary-foreground: hsl(30 15% 95%);
@@ -159,13 +161,13 @@
     --muted-foreground: hsl(200 10% 65%);
     --accent: hsl(200 15% 20%);
     --accent-foreground: hsl(30 15% 95%);
-    --cta: hsl(24 70% 58%);
+    --cta: hsl(116 68% 67%);
     --cta-foreground: hsl(200 20% 8%);
     --destructive: hsl(0 70% 55%);
     --destructive-foreground: hsl(0 0% 98%);
     --border: hsl(200 15% 18%);
     --input: hsl(200 15% 18%);
-    --ring: hsl(189 45% 55%);
+    --ring: hsl(199 100% 50%);
     --chart-1: hsl(220 70% 50%);
     --chart-2: hsl(160 60% 45%);
     --chart-3: hsl(30 80% 55%);
@@ -188,6 +190,14 @@
     }
     body {
         @apply bg-background text-foreground;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-heading);
     }
 }
 
