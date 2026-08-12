@@ -10,6 +10,7 @@ import {
     NotebookText,
     UserCheck,
     Users,
+    UsersRound,
 } from '@lucide/vue';
 import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
@@ -30,6 +31,7 @@ import { index as contactSubmissionsIndex } from '@/routes/admin/contact-submiss
 import { index as partnershipInquiriesIndex } from '@/routes/admin/partnership-inquiries';
 import { index as programsIndex } from '@/routes/admin/programs';
 import { index as storiesIndex } from '@/routes/admin/stories';
+import { index as teamMembersIndex } from '@/routes/admin/team-members';
 import { index as usersIndex } from '@/routes/admin/users';
 import { index as volunteerApplicationsIndex } from '@/routes/admin/volunteer-applications';
 import type { Auth, NavItem } from '@/types';
@@ -57,6 +59,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Stories',
                 href: storiesIndex.url(),
                 icon: NotebookText,
+            },
+            {
+                title: 'Team Members',
+                href: teamMembersIndex.url(),
+                icon: UsersRound,
             },
         );
     }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ContactSubmissionController as AdminContactSubmis
 use App\Http\Controllers\Admin\PartnershipInquiryController as AdminPartnershipInquiryController;
 use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 use App\Http\Controllers\Admin\StoryController as AdminStoryController;
+use App\Http\Controllers\Admin\TeamMemberController as AdminTeamMemberController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\VolunteerApplicationController as AdminVolunteerApplicationController;
 use App\Http\Controllers\ContactPageController;
@@ -45,6 +46,7 @@ Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(fu
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('programs', AdminProgramController::class)->except('show');
         Route::resource('stories', AdminStoryController::class)->except('show');
+        Route::resource('team-members', AdminTeamMemberController::class)->except('show');
         Route::resource('contact-submissions', AdminContactSubmissionController::class)->only(['index', 'update', 'destroy']);
         Route::resource('volunteer-applications', AdminVolunteerApplicationController::class)->only(['index', 'update', 'destroy']);
         Route::resource('partnership-inquiries', AdminPartnershipInquiryController::class)->only(['index', 'update', 'destroy']);
