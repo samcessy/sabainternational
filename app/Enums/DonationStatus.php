@@ -17,4 +17,14 @@ enum DonationStatus: string
     // docs/architecture/payment-architecture.md §5. Distinct from Failed:
     // the donation may have succeeded many times before cancellation.
     case Cancelled = 'cancelled';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::Pending => 'Pending',
+            self::Succeeded => 'Succeeded',
+            self::Failed => 'Failed',
+            self::Cancelled => 'Cancelled',
+        };
+    }
 }

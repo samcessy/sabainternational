@@ -2,6 +2,7 @@
 import { Link, usePage } from '@inertiajs/vue3';
 import {
     BookOpen,
+    CircleDollarSign,
     FolderGit2,
     HandHeart,
     LayoutGrid,
@@ -28,6 +29,7 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as contactSubmissionsIndex } from '@/routes/admin/contact-submissions';
+import { index as donationsIndex } from '@/routes/admin/donations';
 import { index as partnershipInquiriesIndex } from '@/routes/admin/partnership-inquiries';
 import { index as programsIndex } from '@/routes/admin/programs';
 import { index as storiesIndex } from '@/routes/admin/stories';
@@ -91,6 +93,20 @@ const mainNavItems = computed<NavItem[]>(() => {
     return items;
 });
 
+const fundraisingNavItems = computed<NavItem[]>(() => {
+    const items: NavItem[] = [];
+
+    if (page.props.auth.permissions.includes('fundraising:view')) {
+        items.push({
+            title: 'Donations',
+            href: donationsIndex.url(),
+            icon: CircleDollarSign,
+        });
+    }
+
+    return items;
+});
+
 const systemNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [];
 
@@ -135,6 +151,11 @@ const footerNavItems: NavItem[] = [
 
         <SidebarContent>
             <NavMain :items="mainNavItems" />
+            <NavMain
+                v-if="fundraisingNavItems.length > 0"
+                :items="fundraisingNavItems"
+                label="Fundraising"
+            />
             <NavMain
                 v-if="systemNavItems.length > 0"
                 :items="systemNavItems"

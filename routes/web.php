@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutPageController;
 use App\Http\Controllers\Admin\ContactSubmissionController as AdminContactSubmissionController;
+use App\Http\Controllers\Admin\DonationController as AdminDonationController;
 use App\Http\Controllers\Admin\PartnershipInquiryController as AdminPartnershipInquiryController;
 use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 use App\Http\Controllers\Admin\StoryController as AdminStoryController;
@@ -47,6 +48,8 @@ Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(fu
         Route::resource('programs', AdminProgramController::class)->except('show');
         Route::resource('stories', AdminStoryController::class)->except('show');
         Route::resource('team-members', AdminTeamMemberController::class)->except('show');
+        Route::get('donations', [AdminDonationController::class, 'index'])->name('donations.index');
+        Route::get('donations/export', [AdminDonationController::class, 'export'])->name('donations.export');
         Route::resource('contact-submissions', AdminContactSubmissionController::class)->only(['index', 'update', 'destroy']);
         Route::resource('volunteer-applications', AdminVolunteerApplicationController::class)->only(['index', 'update', 'destroy']);
         Route::resource('partnership-inquiries', AdminPartnershipInquiryController::class)->only(['index', 'update', 'destroy']);

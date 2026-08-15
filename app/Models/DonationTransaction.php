@@ -9,7 +9,13 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property PaymentGateway $gateway
+ * @property TransactionStatus $status
+ * @property Carbon|null $receipt_sent_at
+ */
 #[Fillable(['donation_id', 'gateway', 'gateway_reference', 'status', 'receipt_sent_at'])]
 class DonationTransaction extends Model
 {
