@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property MediaVariantType $variant_type
+ */
 #[Fillable(['media_id', 'variant_type', 'path', 'width', 'height'])]
 class MediaVariant extends Model
 {

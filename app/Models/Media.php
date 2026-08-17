@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property ImageConsentStatus|null $consent_status
+ */
 #[Fillable([
     'filename', 'path', 'alt_text', 'caption', 'photographer', 'copyright_license',
     'consent_status', 'program_id', 'story_id', 'focal_point_x', 'focal_point_y', 'exif_data',

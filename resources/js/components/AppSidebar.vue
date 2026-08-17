@@ -5,6 +5,7 @@ import {
     CircleDollarSign,
     FolderGit2,
     HandHeart,
+    Image,
     LayoutGrid,
     Mail,
     Newspaper,
@@ -33,6 +34,7 @@ import { dashboard } from '@/routes';
 import { index as auditLogsIndex } from '@/routes/admin/audit-logs';
 import { index as contactSubmissionsIndex } from '@/routes/admin/contact-submissions';
 import { index as donationsIndex } from '@/routes/admin/donations';
+import { index as mediaIndex } from '@/routes/admin/media';
 import { index as newsletterSubscribersIndex } from '@/routes/admin/newsletter-subscribers';
 import { index as partnershipInquiriesIndex } from '@/routes/admin/partnership-inquiries';
 import { index as programsIndex } from '@/routes/admin/programs';
@@ -70,6 +72,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Team Members',
                 href: teamMembersIndex.url(),
                 icon: UsersRound,
+            },
+            {
+                title: 'Media Library',
+                href: mediaIndex.url(),
+                icon: Image,
             },
         );
     }
