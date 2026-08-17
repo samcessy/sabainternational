@@ -7,7 +7,13 @@ use Database\Factories\NewsletterSubscriberFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property SubscriberStatus $status
+ * @property Carbon|null $consent_timestamp
+ * @property Carbon|null $unsubscribed_at
+ */
 #[Fillable(['email', 'consent_timestamp', 'consent_ip', 'frequency_preference', 'status', 'unsubscribed_at'])]
 class NewsletterSubscriber extends Model
 {

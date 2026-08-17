@@ -10,6 +10,7 @@ import {
     Newspaper,
     NotebookText,
     ScrollText,
+    Send,
     UserCheck,
     Users,
     UsersRound,
@@ -32,6 +33,7 @@ import { dashboard } from '@/routes';
 import { index as auditLogsIndex } from '@/routes/admin/audit-logs';
 import { index as contactSubmissionsIndex } from '@/routes/admin/contact-submissions';
 import { index as donationsIndex } from '@/routes/admin/donations';
+import { index as newsletterSubscribersIndex } from '@/routes/admin/newsletter-subscribers';
 import { index as partnershipInquiriesIndex } from '@/routes/admin/partnership-inquiries';
 import { index as programsIndex } from '@/routes/admin/programs';
 import { index as storiesIndex } from '@/routes/admin/stories';
@@ -88,6 +90,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Partnership Inquiries',
                 href: partnershipInquiriesIndex.url(),
                 icon: HandHeart,
+            },
+            {
+                title: 'Newsletter Subscribers',
+                href: newsletterSubscribersIndex.url(),
+                icon: Send,
             },
         );
     }

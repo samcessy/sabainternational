@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutPageController;
 use App\Http\Controllers\Admin\AuditLogController as AdminAuditLogController;
 use App\Http\Controllers\Admin\ContactSubmissionController as AdminContactSubmissionController;
 use App\Http\Controllers\Admin\DonationController as AdminDonationController;
+use App\Http\Controllers\Admin\NewsletterSubscriberController as AdminNewsletterSubscriberController;
 use App\Http\Controllers\Admin\PartnershipInquiryController as AdminPartnershipInquiryController;
 use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 use App\Http\Controllers\Admin\StoryController as AdminStoryController;
@@ -54,6 +55,9 @@ Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(fu
         Route::resource('contact-submissions', AdminContactSubmissionController::class)->only(['index', 'update', 'destroy']);
         Route::resource('volunteer-applications', AdminVolunteerApplicationController::class)->only(['index', 'update', 'destroy']);
         Route::resource('partnership-inquiries', AdminPartnershipInquiryController::class)->only(['index', 'update', 'destroy']);
+        Route::get('newsletter-subscribers', [AdminNewsletterSubscriberController::class, 'index'])->name('newsletter-subscribers.index');
+        Route::post('newsletter-subscribers/{newsletter_subscriber}/unsubscribe', [AdminNewsletterSubscriberController::class, 'unsubscribe'])->name('newsletter-subscribers.unsubscribe');
+        Route::delete('newsletter-subscribers/{newsletter_subscriber}', [AdminNewsletterSubscriberController::class, 'destroy'])->name('newsletter-subscribers.destroy');
         Route::resource('users', AdminUserController::class)->except(['show']);
         Route::post('users/{user}/send-password-reset', [AdminUserController::class, 'sendPasswordReset'])->name('users.send-password-reset');
         Route::get('audit-logs', [AdminAuditLogController::class, 'index'])->name('audit-logs.index');
