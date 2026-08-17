@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutPageController;
+use App\Http\Controllers\Admin\AuditLogController as AdminAuditLogController;
 use App\Http\Controllers\Admin\ContactSubmissionController as AdminContactSubmissionController;
 use App\Http\Controllers\Admin\DonationController as AdminDonationController;
 use App\Http\Controllers\Admin\PartnershipInquiryController as AdminPartnershipInquiryController;
@@ -55,6 +56,7 @@ Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(fu
         Route::resource('partnership-inquiries', AdminPartnershipInquiryController::class)->only(['index', 'update', 'destroy']);
         Route::resource('users', AdminUserController::class)->except(['show']);
         Route::post('users/{user}/send-password-reset', [AdminUserController::class, 'sendPasswordReset'])->name('users.send-password-reset');
+        Route::get('audit-logs', [AdminAuditLogController::class, 'index'])->name('audit-logs.index');
     });
 });
 

@@ -9,6 +9,7 @@ import {
     Mail,
     Newspaper,
     NotebookText,
+    ScrollText,
     UserCheck,
     Users,
     UsersRound,
@@ -28,6 +29,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { index as auditLogsIndex } from '@/routes/admin/audit-logs';
 import { index as contactSubmissionsIndex } from '@/routes/admin/contact-submissions';
 import { index as donationsIndex } from '@/routes/admin/donations';
 import { index as partnershipInquiriesIndex } from '@/routes/admin/partnership-inquiries';
@@ -115,6 +117,14 @@ const systemNavItems = computed<NavItem[]>(() => {
             title: 'Users',
             href: usersIndex.url(),
             icon: Users,
+        });
+    }
+
+    if (page.props.auth.permissions.includes('system:view-audit-logs')) {
+        items.push({
+            title: 'Audit Logs',
+            href: auditLogsIndex.url(),
+            icon: ScrollText,
         });
     }
 

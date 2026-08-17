@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * Immutable record of privileged actions (saba.md §10.3). Never soft-deleted
  * or updated after creation — see docs/architecture/database-erd.md §1.
+ *
+ * @property array<string, mixed>|null $old_values
+ * @property array<string, mixed>|null $new_values
+ * @property Carbon|null $created_at
  */
 #[Fillable(['user_id', 'action', 'entity_type', 'entity_id', 'old_values', 'new_values', 'ip_address', 'user_agent'])]
 class AuditLog extends Model
