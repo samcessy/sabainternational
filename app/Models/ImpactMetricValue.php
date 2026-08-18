@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property VerificationStatus $verification_status
+ * @property Carbon|null $last_updated_at
+ */
 #[Fillable(['metric_id', 'value', 'time_period', 'data_source', 'verification_status', 'last_updated_at'])]
 class ImpactMetricValue extends Model
 {

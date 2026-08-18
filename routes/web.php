@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\AuditLogController as AdminAuditLogController;
 use App\Http\Controllers\Admin\CampaignController as AdminCampaignController;
 use App\Http\Controllers\Admin\ContactSubmissionController as AdminContactSubmissionController;
 use App\Http\Controllers\Admin\DonationController as AdminDonationController;
+use App\Http\Controllers\Admin\ImpactMetricController as AdminImpactMetricController;
+use App\Http\Controllers\Admin\ImpactMetricValueController as AdminImpactMetricValueController;
 use App\Http\Controllers\Admin\MediaController as AdminMediaController;
 use App\Http\Controllers\Admin\NewsletterSubscriberController as AdminNewsletterSubscriberController;
 use App\Http\Controllers\Admin\PartnershipInquiryController as AdminPartnershipInquiryController;
@@ -53,6 +55,9 @@ Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(fu
         Route::resource('stories', AdminStoryController::class)->except('show');
         Route::resource('team-members', AdminTeamMemberController::class)->except('show');
         Route::resource('campaigns', AdminCampaignController::class)->except('show');
+        Route::resource('impact-metrics', AdminImpactMetricController::class)->except('show');
+        Route::post('impact-metrics/{impact_metric}/values', [AdminImpactMetricValueController::class, 'store'])->name('impact-metrics.values.store');
+        Route::delete('impact-metrics/{impact_metric}/values/{value}', [AdminImpactMetricValueController::class, 'destroy'])->name('impact-metrics.values.destroy');
         Route::get('donations', [AdminDonationController::class, 'index'])->name('donations.index');
         Route::get('donations/export', [AdminDonationController::class, 'export'])->name('donations.export');
         Route::resource('contact-submissions', AdminContactSubmissionController::class)->only(['index', 'update', 'destroy']);

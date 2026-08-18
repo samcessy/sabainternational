@@ -13,6 +13,7 @@ import {
     NotebookText,
     ScrollText,
     Send,
+    TrendingUp,
     UserCheck,
     Users,
     UsersRound,
@@ -36,6 +37,7 @@ import { index as auditLogsIndex } from '@/routes/admin/audit-logs';
 import { index as campaignsIndex } from '@/routes/admin/campaigns';
 import { index as contactSubmissionsIndex } from '@/routes/admin/contact-submissions';
 import { index as donationsIndex } from '@/routes/admin/donations';
+import { index as impactMetricsIndex } from '@/routes/admin/impact-metrics';
 import { index as mediaIndex } from '@/routes/admin/media';
 import { index as newsletterSubscribersIndex } from '@/routes/admin/newsletter-subscribers';
 import { index as partnershipInquiriesIndex } from '@/routes/admin/partnership-inquiries';
@@ -106,6 +108,20 @@ const mainNavItems = computed<NavItem[]>(() => {
                 icon: Send,
             },
         );
+    }
+
+    return items;
+});
+
+const impactNavItems = computed<NavItem[]>(() => {
+    const items: NavItem[] = [];
+
+    if (page.props.auth.permissions.includes('impact:view')) {
+        items.push({
+            title: 'Impact Metrics',
+            href: impactMetricsIndex.url(),
+            icon: TrendingUp,
+        });
     }
 
     return items;
@@ -184,6 +200,11 @@ const footerNavItems: NavItem[] = [
 
         <SidebarContent>
             <NavMain :items="mainNavItems" />
+            <NavMain
+                v-if="impactNavItems.length > 0"
+                :items="impactNavItems"
+                label="Impact"
+            />
             <NavMain
                 v-if="fundraisingNavItems.length > 0"
                 :items="fundraisingNavItems"
