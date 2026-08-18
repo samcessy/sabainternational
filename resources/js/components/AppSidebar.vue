@@ -8,6 +8,7 @@ import {
     Image,
     LayoutGrid,
     Mail,
+    Megaphone,
     Newspaper,
     NotebookText,
     ScrollText,
@@ -32,6 +33,7 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as auditLogsIndex } from '@/routes/admin/audit-logs';
+import { index as campaignsIndex } from '@/routes/admin/campaigns';
 import { index as contactSubmissionsIndex } from '@/routes/admin/contact-submissions';
 import { index as donationsIndex } from '@/routes/admin/donations';
 import { index as mediaIndex } from '@/routes/admin/media';
@@ -113,11 +115,18 @@ const fundraisingNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [];
 
     if (page.props.auth.permissions.includes('fundraising:view')) {
-        items.push({
-            title: 'Donations',
-            href: donationsIndex.url(),
-            icon: CircleDollarSign,
-        });
+        items.push(
+            {
+                title: 'Campaigns',
+                href: campaignsIndex.url(),
+                icon: Megaphone,
+            },
+            {
+                title: 'Donations',
+                href: donationsIndex.url(),
+                icon: CircleDollarSign,
+            },
+        );
     }
 
     return items;

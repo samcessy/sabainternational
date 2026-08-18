@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property ContentStatus $status
  * @property Carbon|null $start_date
  * @property Carbon|null $end_date
+ * @property array<int, int>|null $suggested_amounts
  */
 #[Fillable([
     'name', 'slug', 'description', 'goal_amount_cents', 'currency', 'start_date',
