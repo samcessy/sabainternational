@@ -57,3 +57,25 @@ test('an editor can delete media, its files, and it is audit logged', function (
         'entity_id' => $media->id,
     ]);
 });
+
+test('an editor can fetch the media picker list used by Story/TeamMember forms', function () {
+    Media::factory()->create(['alt_text' => 'A photo']);
+    $editor = actingAsAdmin();
+
+    $response = $this->actingAs($editor)->getJson(route('admin.media.picker'));
+
+    $response->assertOk();
+    $response->assertJsonCount(1, 'data');
+    $response->assertJsonPath('data.0.alt_text', 'A photo');
+});
+
+test('a viewer can also fetch the media picker list (ViewContent, not ManageContent)', function () {
+    Media::factory()->create();
+    $viewer = actingAsAdmin(AdminRole::Viewer);
+
+    $this->actingAs($viewer)->getJson(route('admin.media.picker'))->assertOk();
+});
+
+test('guests cannot fetch the media picker list', function () {
+    $this->getJson(route('admin.media.picker'))->assertUnauthorized();
+});

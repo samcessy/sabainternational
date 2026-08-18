@@ -15,6 +15,17 @@ class StoreTeamMemberRequest extends FormRequest
     }
 
     /**
+     * See StoreStoryRequest::prepareForValidation() - an unselected
+     * <MediaPicker> submits an empty string, not an absent field.
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'photo_media_id' => $this->input('photo_media_id') ?: null,
+        ]);
+    }
+
+    /**
      * @return array<string, mixed>
      */
     public function rules(): array
@@ -26,6 +37,7 @@ class StoreTeamMemberRequest extends FormRequest
             // exact case at save time — catching it here first turns it into
             // a normal field error instead of a crash.
             'bio' => [$this->input('status') === ContentStatus::Published->value ? 'required' : 'nullable', 'string'],
+            'photo_media_id' => ['nullable', 'exists:media,id'],
             'board_member' => ['boolean'],
             'consent_to_publish' => ['boolean'],
             'display_order' => ['required', 'integer', 'min:0'],

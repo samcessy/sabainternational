@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\ImageConsentStatus;
-use App\Enums\MediaVariantType;
 use App\Http\Controllers\Controller;
 use App\Models\Media;
-use App\Models\MediaVariant;
 use App\Services\AuditLogger;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -33,23 +32,44 @@ class MediaController extends Controller
                 ->with(['variants', 'program', 'story'])
                 ->latest()
                 ->paginate(24)
-                ->through(function (Media $item) {
-                    $thumbnail = $item->variants
-                        ->first(fn (MediaVariant $variant) => $variant->variant_type === MediaVariantType::Thumbnail);
-
-                    return [
-                        'id' => $item->id,
-                        'filename' => $item->filename,
-                        'alt_text' => $item->alt_text,
-                        'consent_status' => $item->consent_status?->value,
-                        'consent_status_label' => $item->consent_status?->label(),
-                        'program' => $item->program?->name,
-                        'story' => $item->story?->title,
-                        'thumbnail_url' => $thumbnail ? Storage::disk('public')->url($thumbnail->path) : null,
-                        'created_at' => $item->created_at?->toIso8601String(),
-                    ];
-                }),
+                ->through(fn (Media $item) => [
+                    'id' => $item->id,
+                    'filename' => $item->filename,
+                    'alt_text' => $item->alt_text,
+                    'consent_status' => $item->consent_status?->value,
+                    'consent_status_label' => $item->consent_status?->label(),
+                    'program' => $item->program?->name,
+                    'story' => $item->story?->title,
+                    'thumbnail_url' => $item->thumbnailUrl(),
+                    'created_at' => $item->created_at?->toIso8601String(),
+                ]),
             'imageConsentOptions' => ImageConsentStatus::options(),
+        ]);
+    }
+
+    /**
+     * Flat JSON list for the <MediaPicker> component used by Story/
+     * TeamMember forms - deliberately not an Inertia page, since it's
+     * fetched from inside a Dialog on an already-rendered admin page, not
+     * navigated to directly. Capped at the 100 most recent uploads; a
+     * proper search/paginated picker is a future improvement once a
+     * library this size is a real scenario, not a hypothetical one.
+     */
+    public function picker(): JsonResponse
+    {
+        $this->authorize('viewAny', Media::class);
+
+        return response()->json([
+            'data' => Media::query()
+                ->with('variants')
+                ->latest()
+                ->limit(100)
+                ->get()
+                ->map(fn (Media $item) => [
+                    'id' => $item->id,
+                    'alt_text' => $item->alt_text,
+                    'thumbnail_url' => $item->thumbnailUrl(),
+                ]),
         ]);
     }
 

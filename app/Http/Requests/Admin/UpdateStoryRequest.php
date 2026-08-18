@@ -28,6 +28,7 @@ class UpdateStoryRequest extends FormRequest
         $this->merge([
             'program_id' => $this->input('program_id') ?: null,
             'image_consent' => $this->input('image_consent') ?: null,
+            'featured_image_media_id' => $this->input('featured_image_media_id') ?: null,
         ]);
     }
 
@@ -44,6 +45,7 @@ class UpdateStoryRequest extends FormRequest
             'slug' => ['required', 'string', 'max:255', 'alpha_dash', Rule::unique('stories', 'slug')->ignore($story->id)],
             'excerpt' => ['nullable', 'string', 'max:500'],
             'body' => ['nullable', 'string'],
+            'featured_image_media_id' => ['nullable', 'exists:media,id'],
             'program_id' => ['nullable', 'exists:programs,id'],
             'story_type' => ['required', new Enum(StoryType::class)],
             'location' => ['nullable', 'string', 'max:255'],

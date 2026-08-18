@@ -2,6 +2,7 @@
 
 use App\Enums\AdminRole;
 use App\Enums\ContentStatus;
+use App\Models\Media;
 use App\Models\TeamMember;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -129,4 +130,43 @@ test('an editor can delete a team member and it is audit logged', function () {
         'entity_type' => 'team_member',
         'entity_id' => $teamMember->id,
     ]);
+});
+
+test('a team member can be created with a photo from the media library', function () {
+    $media = Media::factory()->create();
+    $editor = actingAsAdmin();
+
+    $this->actingAs($editor)->post(route('admin.team-members.store'), validTeamMemberPayload([
+        'photo_media_id' => $media->id,
+    ]))->assertRedirect(route('admin.team-members.index'));
+
+    $this->assertDatabaseHas('team_members', ['name' => 'Jane Doe', 'photo_media_id' => $media->id]);
+});
+
+test('creating a team member with a nonexistent photo id fails validation', function () {
+    $editor = actingAsAdmin();
+
+    $this->actingAs($editor)
+        ->post(route('admin.team-members.store'), validTeamMemberPayload(['photo_media_id' => 99999]))
+        ->assertSessionHasErrors('photo_media_id');
+});
+
+test('an unselected photo does not fail exists validation', function () {
+    $editor = actingAsAdmin();
+
+    $this->actingAs($editor)
+        ->post(route('admin.team-members.store'), [...validTeamMemberPayload(), 'photo_media_id' => ''])
+        ->assertSessionDoesntHaveErrors('photo_media_id');
+});
+
+test('editing a team member exposes its photo thumbnail for the picker preview', function () {
+    $media = Media::factory()->create();
+    $teamMember = TeamMember::factory()->create(['photo_media_id' => $media->id]);
+    $editor = actingAsAdmin();
+
+    $response = $this->actingAs($editor)->get(route('admin.team-members.edit', $teamMember));
+
+    $response->assertInertia(fn (Assert $page) => $page
+        ->where('teamMember.photo_media_id', $media->id)
+    );
 });

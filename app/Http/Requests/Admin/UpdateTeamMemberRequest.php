@@ -14,6 +14,16 @@ class UpdateTeamMemberRequest extends FormRequest
     }
 
     /**
+     * See StoreTeamMemberRequest::prepareForValidation().
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'photo_media_id' => $this->input('photo_media_id') ?: null,
+        ]);
+    }
+
+    /**
      * @return array<string, mixed>
      */
     public function rules(): array
@@ -24,6 +34,7 @@ class UpdateTeamMemberRequest extends FormRequest
             // See StoreTeamMemberRequest::rules() — turns TeamMember's
             // publish-guard RuntimeException into a normal field error.
             'bio' => [$this->input('status') === ContentStatus::Published->value ? 'required' : 'nullable', 'string'],
+            'photo_media_id' => ['nullable', 'exists:media,id'],
             'board_member' => ['boolean'],
             'consent_to_publish' => ['boolean'],
             'display_order' => ['required', 'integer', 'min:0'],

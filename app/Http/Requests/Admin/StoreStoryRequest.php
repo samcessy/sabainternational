@@ -29,6 +29,7 @@ class StoreStoryRequest extends FormRequest
         $this->merge([
             'program_id' => $this->input('program_id') ?: null,
             'image_consent' => $this->input('image_consent') ?: null,
+            'featured_image_media_id' => $this->input('featured_image_media_id') ?: null,
         ]);
     }
 
@@ -42,6 +43,7 @@ class StoreStoryRequest extends FormRequest
             'slug' => ['required', 'string', 'max:255', 'alpha_dash', 'unique:stories,slug'],
             'excerpt' => ['nullable', 'string', 'max:500'],
             'body' => ['nullable', 'string'],
+            'featured_image_media_id' => ['nullable', 'exists:media,id'],
             'program_id' => ['nullable', 'exists:programs,id'],
             'story_type' => ['required', new Enum(StoryType::class)],
             'location' => ['nullable', 'string', 'max:255'],

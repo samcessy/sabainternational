@@ -78,12 +78,15 @@ class StoryController extends Controller
         $this->authorize('update', $story);
 
         return Inertia::render('admin/stories/Edit', [
-            'story' => $story->only([
-                'id', 'title', 'slug', 'excerpt', 'body', 'program_id', 'story_type',
-                'location', 'consent_status', 'image_consent', 'guardian_consent',
-                'anonymity_requested', 'sensitive_content_classification', 'approval_stage',
-                'attribution', 'seo_title', 'seo_description', 'og_image', 'status', 'featured',
-            ]),
+            'story' => [
+                ...$story->only([
+                    'id', 'title', 'slug', 'excerpt', 'body', 'featured_image_media_id', 'program_id',
+                    'story_type', 'location', 'consent_status', 'image_consent', 'guardian_consent',
+                    'anonymity_requested', 'sensitive_content_classification', 'approval_stage',
+                    'attribution', 'seo_title', 'seo_description', 'og_image', 'status', 'featured',
+                ]),
+                'featured_image_thumbnail_url' => $story->featuredImage?->thumbnailUrl(),
+            ],
             ...$this->formOptions(),
         ]);
     }

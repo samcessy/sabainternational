@@ -64,9 +64,13 @@ class TeamMemberController extends Controller
         $this->authorize('update', $teamMember);
 
         return Inertia::render('admin/team-members/Edit', [
-            'teamMember' => $teamMember->only([
-                'id', 'name', 'role', 'bio', 'board_member', 'consent_to_publish', 'display_order', 'status',
-            ]),
+            'teamMember' => [
+                ...$teamMember->only([
+                    'id', 'name', 'role', 'bio', 'photo_media_id', 'board_member',
+                    'consent_to_publish', 'display_order', 'status',
+                ]),
+                'photo_thumbnail_url' => $teamMember->photo?->thumbnailUrl(),
+            ],
             'statusOptions' => ContentStatus::options(),
         ]);
     }

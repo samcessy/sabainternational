@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form } from '@inertiajs/vue3';
+import MediaPicker from '@/components/admin/MediaPicker.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -23,6 +24,8 @@ type StoryValues = {
     slug?: string;
     excerpt?: string | null;
     body?: string | null;
+    featured_image_media_id?: number | null;
+    featured_image_thumbnail_url?: string | null;
     program_id?: number | null;
     story_type?: string;
     location?: string | null;
@@ -116,6 +119,17 @@ withDefaults(
             />
             <InputError id="body-error" :message="errors.body" />
         </div>
+
+        <MediaPicker
+            name="featured_image_media_id"
+            label="Featured Image (optional)"
+            :initial-media-id="story?.featured_image_media_id"
+            :initial-preview-url="story?.featured_image_thumbnail_url"
+        />
+        <InputError
+            id="featured_image_media_id-error"
+            :message="errors.featured_image_media_id"
+        />
 
         <div class="grid gap-5 sm:grid-cols-2">
             <div class="space-y-2">

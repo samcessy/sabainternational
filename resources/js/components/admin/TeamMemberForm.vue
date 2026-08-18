@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form } from '@inertiajs/vue3';
+import MediaPicker from '@/components/admin/MediaPicker.vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -21,6 +22,8 @@ type TeamMemberValues = {
     name?: string;
     role?: string;
     bio?: string | null;
+    photo_media_id?: number | null;
+    photo_thumbnail_url?: string | null;
     board_member?: boolean;
     consent_to_publish?: boolean;
     display_order?: number;
@@ -85,6 +88,17 @@ withDefaults(
                 A team member cannot be published without a bio.
             </p>
         </div>
+
+        <MediaPicker
+            name="photo_media_id"
+            label="Photo (optional)"
+            :initial-media-id="teamMember?.photo_media_id"
+            :initial-preview-url="teamMember?.photo_thumbnail_url"
+        />
+        <InputError
+            id="photo_media_id-error"
+            :message="errors.photo_media_id"
+        />
 
         <div class="space-y-2">
             <Label for="display_order">Display Order</Label>

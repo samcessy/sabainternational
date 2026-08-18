@@ -6,6 +6,7 @@ use App\Enums\ConsentStatus;
 use App\Enums\ContentStatus;
 use App\Enums\SensitiveContentClassification;
 use App\Enums\StoryType;
+use App\Models\Media;
 use App\Models\Story;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -164,4 +165,43 @@ test('an editor can delete a story and it is audit logged', function () {
         'entity_type' => 'story',
         'entity_id' => $story->id,
     ]);
+});
+
+test('a story can be created with a featured image from the media library', function () {
+    $media = Media::factory()->create();
+    $editor = actingAsAdmin();
+
+    $this->actingAs($editor)->post(route('admin.stories.store'), validStoryPayload([
+        'featured_image_media_id' => $media->id,
+    ]))->assertRedirect(route('admin.stories.index'));
+
+    $this->assertDatabaseHas('stories', ['slug' => 'a-story-of-change', 'featured_image_media_id' => $media->id]);
+});
+
+test('creating a story with a nonexistent featured image id fails validation', function () {
+    $editor = actingAsAdmin();
+
+    $this->actingAs($editor)
+        ->post(route('admin.stories.store'), validStoryPayload(['featured_image_media_id' => 99999]))
+        ->assertSessionHasErrors('featured_image_media_id');
+});
+
+test('an unselected featured image does not fail exists validation', function () {
+    $editor = actingAsAdmin();
+
+    $this->actingAs($editor)
+        ->post(route('admin.stories.store'), [...validStoryPayload(), 'featured_image_media_id' => ''])
+        ->assertSessionDoesntHaveErrors('featured_image_media_id');
+});
+
+test('editing a story exposes its featured image thumbnail for the picker preview', function () {
+    $media = Media::factory()->create();
+    $story = Story::factory()->create(['featured_image_media_id' => $media->id]);
+    $editor = actingAsAdmin();
+
+    $response = $this->actingAs($editor)->get(route('admin.stories.edit', $story));
+
+    $response->assertInertia(fn (Assert $page) => $page
+        ->where('story.featured_image_media_id', $media->id)
+    );
 });
