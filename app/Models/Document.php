@@ -9,7 +9,13 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property DocumentType $document_type
+ * @property ContentStatus $status
+ * @property Carbon|null $published_at
+ */
 #[Fillable([
     'title', 'document_type', 'year', 'summary', 'file_media_id',
     'cover_image_media_id', 'status', 'published_at',

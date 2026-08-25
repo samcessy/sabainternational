@@ -36,7 +36,13 @@ class MediaController extends Controller
             'focal_point_y' => $request->validated('focal_point_y') ?? 0.5,
         ]);
 
-        GenerateMediaVariants::dispatch($media);
+        // Variant generation decodes the file as an image — skip it for a
+        // non-image upload (e.g. a PDF annual report) rather than dispatch
+        // a job guaranteed to fail. Media::thumbnailUrl() already handles
+        // no-variants gracefully everywhere it's called.
+        if (str_starts_with($file->getMimeType() ?? '', 'image/')) {
+            GenerateMediaVariants::dispatch($media);
+        }
 
         return response()->json(['data' => $media], 201);
     }

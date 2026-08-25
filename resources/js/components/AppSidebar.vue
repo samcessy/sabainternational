@@ -3,6 +3,7 @@ import { Link, usePage } from '@inertiajs/vue3';
 import {
     BookOpen,
     CircleDollarSign,
+    FileText,
     FolderGit2,
     HandHeart,
     Image,
@@ -36,6 +37,7 @@ import { dashboard } from '@/routes';
 import { index as auditLogsIndex } from '@/routes/admin/audit-logs';
 import { index as campaignsIndex } from '@/routes/admin/campaigns';
 import { index as contactSubmissionsIndex } from '@/routes/admin/contact-submissions';
+import { index as documentsIndex } from '@/routes/admin/documents';
 import { index as donationsIndex } from '@/routes/admin/donations';
 import { index as impactMetricsIndex } from '@/routes/admin/impact-metrics';
 import { index as mediaIndex } from '@/routes/admin/media';
@@ -81,6 +83,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Media Library',
                 href: mediaIndex.url(),
                 icon: Image,
+            },
+            {
+                title: 'Documents',
+                href: documentsIndex.url(),
+                icon: FileText,
             },
         );
     }

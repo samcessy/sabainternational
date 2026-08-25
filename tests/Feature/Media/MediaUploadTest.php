@@ -76,3 +76,25 @@ test('guests cannot upload media', function () {
         'consent_status' => ImageConsentStatus::Yes->value,
     ])->assertRedirect(route('login'));
 });
+
+test('an editor can upload a PDF without alt text or consent status, and no variants are dispatched', function () {
+    Queue::fake();
+    $editor = actingAsAdmin();
+
+    $response = $this->actingAs($editor)->post(route('media.store'), [
+        'file' => UploadedFile::fake()->create('annual-report-2026.pdf', 500, 'application/pdf'),
+    ]);
+
+    $response->assertCreated();
+    $this->assertDatabaseHas('media', ['filename' => 'annual-report-2026.pdf']);
+    Queue::assertNotPushed(GenerateMediaVariants::class);
+});
+
+test('an unselected consent status on a PDF upload does not fail validation', function () {
+    $editor = actingAsAdmin();
+
+    $this->actingAs($editor)->post(route('media.store'), [
+        'file' => UploadedFile::fake()->create('report.pdf', 500, 'application/pdf'),
+        'consent_status' => '',
+    ])->assertSessionDoesntHaveErrors(['consent_status', 'alt_text']);
+});

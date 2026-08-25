@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ImageOff, X } from '@lucide/vue';
+import { FileText, ImageOff, X } from '@lucide/vue';
 import { ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,6 +13,7 @@ import { picker } from '@/routes/admin/media';
 
 type MediaOption = {
     id: number;
+    filename: string;
     alt_text: string | null;
     thumbnail_url: string | null;
 };
@@ -21,10 +22,17 @@ const props = withDefaults(
     defineProps<{
         name: string;
         label: string;
+        chooseLabel?: string;
         initialMediaId?: number | null;
         initialPreviewUrl?: string | null;
+        initialFileName?: string | null;
     }>(),
-    { initialMediaId: null, initialPreviewUrl: null },
+    {
+        chooseLabel: 'Choose Image',
+        initialMediaId: null,
+        initialPreviewUrl: null,
+        initialFileName: null,
+    },
 );
 
 const open = ref(false);
@@ -32,6 +40,7 @@ const loading = ref(false);
 const items = ref<MediaOption[]>([]);
 const selectedId = ref<number | null>(props.initialMediaId);
 const selectedPreviewUrl = ref<string | null>(props.initialPreviewUrl);
+const selectedFileName = ref<string | null>(props.initialFileName);
 
 async function openPicker() {
     open.value = true;
@@ -56,12 +65,14 @@ async function openPicker() {
 function select(item: MediaOption) {
     selectedId.value = item.id;
     selectedPreviewUrl.value = item.thumbnail_url;
+    selectedFileName.value = item.filename;
     open.value = false;
 }
 
 function clear() {
     selectedId.value = null;
     selectedPreviewUrl.value = null;
+    selectedFileName.value = null;
 }
 </script>
 
@@ -71,7 +82,7 @@ function clear() {
         <input type="hidden" :name="name" :value="selectedId ?? ''" />
         <div class="flex items-center gap-3">
             <div
-                class="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-muted"
+                class="flex size-20 shrink-0 flex-col items-center justify-center gap-1 overflow-hidden rounded-md border border-border bg-muted p-1 text-center"
             >
                 <img
                     v-if="selectedPreviewUrl"
@@ -79,11 +90,24 @@ function clear() {
                     alt=""
                     class="size-full object-cover"
                 />
-                <ImageOff
-                    v-else
-                    class="size-5 text-muted-foreground"
-                    aria-hidden="true"
-                />
+                <template v-else>
+                    <FileText
+                        v-if="selectedFileName"
+                        class="size-5 text-muted-foreground"
+                        aria-hidden="true"
+                    />
+                    <ImageOff
+                        v-else
+                        class="size-5 text-muted-foreground"
+                        aria-hidden="true"
+                    />
+                    <span
+                        v-if="selectedFileName"
+                        class="line-clamp-2 text-[10px] break-all text-muted-foreground"
+                    >
+                        {{ selectedFileName }}
+                    </span>
+                </template>
             </div>
             <div class="flex flex-col gap-2">
                 <Button
@@ -92,7 +116,7 @@ function clear() {
                     size="sm"
                     @click="openPicker"
                 >
-                    Choose Image
+                    {{ chooseLabel }}
                 </Button>
                 <Button
                     v-if="selectedId"
@@ -111,7 +135,7 @@ function clear() {
     <Dialog :open="open" @update:open="(value) => (open = value)">
         <DialogContent class="max-w-2xl">
             <DialogHeader>
-                <DialogTitle>Choose an Image</DialogTitle>
+                <DialogTitle>{{ chooseLabel }}</DialogTitle>
             </DialogHeader>
             <div
                 v-if="loading"
@@ -123,7 +147,7 @@ function clear() {
                 v-else-if="items.length === 0"
                 class="py-10 text-center text-sm text-muted-foreground"
             >
-                No images in the library yet.
+                No files in the library yet.
             </div>
             <div
                 v-else
@@ -133,8 +157,8 @@ function clear() {
                     v-for="item in items"
                     :key="item.id"
                     type="button"
-                    class="aspect-square overflow-hidden rounded-md border border-border focus-visible:ring-2 focus-visible:ring-ring"
-                    :aria-label="`Select ${item.alt_text ?? 'image'}`"
+                    class="flex aspect-square flex-col items-center justify-center gap-1 overflow-hidden rounded-md border border-border p-1 text-center focus-visible:ring-2 focus-visible:ring-ring"
+                    :aria-label="`Select ${item.alt_text ?? item.filename}`"
                     @click="select(item)"
                 >
                     <img
@@ -143,12 +167,17 @@ function clear() {
                         :alt="item.alt_text ?? ''"
                         class="size-full object-cover"
                     />
-                    <div
-                        v-else
-                        class="flex size-full items-center justify-center bg-muted text-muted-foreground"
-                    >
-                        <ImageOff class="size-4" aria-hidden="true" />
-                    </div>
+                    <template v-else>
+                        <FileText
+                            class="size-5 text-muted-foreground"
+                            aria-hidden="true"
+                        />
+                        <span
+                            class="line-clamp-2 text-[10px] break-all text-muted-foreground"
+                        >
+                            {{ item.filename }}
+                        </span>
+                    </template>
                 </button>
             </div>
         </DialogContent>

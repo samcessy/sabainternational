@@ -67,6 +67,7 @@ class MediaController extends Controller
                 ->get()
                 ->map(fn (Media $item) => [
                     'id' => $item->id,
+                    'filename' => $item->filename,
                     'alt_text' => $item->alt_text,
                     'thumbnail_url' => $item->thumbnailUrl(),
                 ]),

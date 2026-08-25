@@ -159,7 +159,10 @@ function decodeLabel(label: string): string {
             v-if="canManage()"
             class="mt-6 max-w-xl rounded-lg border border-border p-4"
         >
-            <h2 class="text-sm font-medium text-foreground">Upload Image</h2>
+            <h2 class="text-sm font-medium text-foreground">Upload File</h2>
+            <p class="mt-1 text-sm text-muted-foreground">
+                Images (JPG, PNG, WebP) or PDF documents, up to 20MB.
+            </p>
             <form class="mt-3 space-y-4" @submit.prevent="upload">
                 <div class="space-y-2">
                     <Label for="file">File</Label>
@@ -167,7 +170,7 @@ function decodeLabel(label: string): string {
                         id="file"
                         ref="fileInput"
                         type="file"
-                        accept="image/jpeg,image/png,image/webp"
+                        accept="image/jpeg,image/png,image/webp,application/pdf"
                         class="block w-full text-sm text-foreground file:mr-3 file:rounded-md file:border-0 file:bg-secondary file:px-3 file:py-1.5 file:text-sm file:font-medium"
                         :aria-describedby="
                             uploadError ? 'upload-error' : undefined
@@ -175,11 +178,13 @@ function decodeLabel(label: string): string {
                     />
                 </div>
                 <div class="space-y-2">
-                    <Label for="alt_text">Alt Text</Label>
-                    <Input id="alt_text" v-model="altText" required />
+                    <Label for="alt_text">Alt Text (required for images)</Label>
+                    <Input id="alt_text" v-model="altText" />
                 </div>
                 <div class="space-y-2">
-                    <Label for="consent_status">Consent Status</Label>
+                    <Label for="consent_status">
+                        Consent Status (required for images)
+                    </Label>
                     <Select v-model="consentStatus">
                         <SelectTrigger id="consent_status" class="w-full">
                             <SelectValue
@@ -236,7 +241,7 @@ function decodeLabel(label: string): string {
                         class="flex flex-col items-center gap-1 text-muted-foreground"
                     >
                         <ImageOff class="size-6" aria-hidden="true" />
-                        <span class="text-xs">Processing…</span>
+                        <span class="text-xs">No preview</span>
                     </div>
                 </div>
                 <div class="space-y-1 p-3 text-sm">
@@ -292,11 +297,11 @@ function decodeLabel(label: string): string {
     >
         <DialogContent>
             <DialogHeader>
-                <DialogTitle>Delete this image?</DialogTitle>
+                <DialogTitle>Delete this file?</DialogTitle>
                 <DialogDescription>
                     This will permanently delete "{{
                         pendingDelete?.alt_text ?? pendingDelete?.filename
-                    }}" and all of its variants. This action cannot be undone.
+                    }}" and any variants. This action cannot be undone.
                 </DialogDescription>
             </DialogHeader>
             <DialogFooter>
