@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property Carbon $start_at
+ * @property Carbon|null $end_at
+ * @property ContentStatus $status
+ */
 #[Fillable(['title', 'slug', 'description', 'start_at', 'end_at', 'location', 'featured_image_media_id', 'status'])]
 class Event extends Model
 {

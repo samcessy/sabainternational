@@ -2,6 +2,7 @@
 import { Link, usePage } from '@inertiajs/vue3';
 import {
     BookOpen,
+    CalendarDays,
     CircleDollarSign,
     FileText,
     FolderGit2,
@@ -39,6 +40,7 @@ import { index as campaignsIndex } from '@/routes/admin/campaigns';
 import { index as contactSubmissionsIndex } from '@/routes/admin/contact-submissions';
 import { index as documentsIndex } from '@/routes/admin/documents';
 import { index as donationsIndex } from '@/routes/admin/donations';
+import { index as eventsIndex } from '@/routes/admin/events';
 import { index as impactMetricsIndex } from '@/routes/admin/impact-metrics';
 import { index as mediaIndex } from '@/routes/admin/media';
 import { index as newsletterSubscribersIndex } from '@/routes/admin/newsletter-subscribers';
@@ -88,6 +90,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Documents',
                 href: documentsIndex.url(),
                 icon: FileText,
+            },
+            {
+                title: 'Events',
+                href: eventsIndex.url(),
+                icon: CalendarDays,
             },
         );
     }
