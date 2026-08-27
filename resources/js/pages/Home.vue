@@ -87,12 +87,25 @@ const programs = [
     <Head title="Home" />
 
     <!-- Hero -->
-    <section class="border-b border-border bg-primary text-primary-foreground">
+    <section
+        class="relative isolate overflow-hidden border-b border-border text-white"
+    >
+        <picture class="absolute inset-0 -z-10">
+            <source srcset="/images/home-hero.webp" type="image/webp" />
+            <img
+                src="/images/home-hero.jpg"
+                alt="Children at a Saba International partner school smiling together"
+                class="h-full w-full object-cover object-right"
+                fetchpriority="high"
+            />
+        </picture>
+        <div class="absolute inset-0 -z-10 bg-gray-900/60" aria-hidden="true" />
+
         <div
-            class="mx-auto max-w-5xl px-4 py-20 text-center sm:px-6 sm:py-28 lg:px-8"
+            class="relative mx-auto max-w-5xl px-4 py-20 text-center sm:px-6 sm:py-28 lg:px-8"
         >
             <p
-                class="text-sm font-semibold tracking-wide text-primary-foreground/80 uppercase"
+                class="text-sm font-semibold tracking-wide text-white/80 uppercase"
             >
                 Saba International &middot; Est. 2009
             </p>
@@ -110,7 +123,7 @@ const programs = [
                     as-child
                     variant="outline"
                     size="lg"
-                    class="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                    class="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
                 >
                     <a href="#our-work">Explore Our Work</a>
                 </Button>
