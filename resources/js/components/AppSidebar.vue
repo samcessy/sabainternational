@@ -8,6 +8,7 @@ import {
     FileText,
     FolderGit2,
     HandHeart,
+    HeartHandshake,
     Image,
     LayoutGrid,
     Mail,
@@ -53,6 +54,7 @@ import { index as programsIndex } from '@/routes/admin/programs';
 import { index as redirectsIndex } from '@/routes/admin/redirects';
 import { index as storiesIndex } from '@/routes/admin/stories';
 import { index as storyTagsIndex } from '@/routes/admin/story-tags';
+import { index as supportersIndex } from '@/routes/admin/supporters';
 import { index as teamMembersIndex } from '@/routes/admin/team-members';
 import { index as usersIndex } from '@/routes/admin/users';
 import { index as volunteerApplicationsIndex } from '@/routes/admin/volunteer-applications';
@@ -176,6 +178,11 @@ const fundraisingNavItems = computed<NavItem[]>(() => {
                 title: 'Donations',
                 href: donationsIndex.url(),
                 icon: CircleDollarSign,
+            },
+            {
+                title: 'Supporters',
+                href: supportersIndex.url(),
+                icon: HeartHandshake,
             },
         );
     }
