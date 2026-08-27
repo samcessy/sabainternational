@@ -14,6 +14,7 @@ import {
     Megaphone,
     Newspaper,
     NotebookText,
+    Route as RouteIcon,
     ScrollText,
     Send,
     TrendingUp,
@@ -48,6 +49,7 @@ import { index as newsletterSubscribersIndex } from '@/routes/admin/newsletter-s
 import { index as pagesIndex } from '@/routes/admin/pages';
 import { index as partnershipInquiriesIndex } from '@/routes/admin/partnership-inquiries';
 import { index as programsIndex } from '@/routes/admin/programs';
+import { index as redirectsIndex } from '@/routes/admin/redirects';
 import { index as storiesIndex } from '@/routes/admin/stories';
 import { index as teamMembersIndex } from '@/routes/admin/team-members';
 import { index as usersIndex } from '@/routes/admin/users';
@@ -102,6 +104,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Pages',
                 href: pagesIndex.url(),
                 icon: FileStack,
+            },
+            {
+                title: 'Redirects',
+                href: redirectsIndex.url(),
+                icon: RouteIcon,
             },
         );
     }

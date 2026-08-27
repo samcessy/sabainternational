@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\NewsletterSubscriberController as AdminNewsletter
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\PartnershipInquiryController as AdminPartnershipInquiryController;
 use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
+use App\Http\Controllers\Admin\RedirectController as AdminRedirectController;
 use App\Http\Controllers\Admin\StoryController as AdminStoryController;
 use App\Http\Controllers\Admin\TeamMemberController as AdminTeamMemberController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\PagePageController;
 use App\Http\Controllers\PartnershipInquiryController;
 use App\Http\Controllers\PartnershipPageController;
 use App\Http\Controllers\ProgramPageController;
+use App\Http\Controllers\RedirectResolutionController;
 use App\Http\Controllers\StoryPageController;
 use App\Http\Controllers\VolunteerApplicationController;
 use App\Http\Controllers\VolunteerPageController;
@@ -63,6 +65,7 @@ Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(fu
         Route::resource('documents', AdminDocumentController::class)->except('show');
         Route::resource('events', AdminEventController::class)->except('show');
         Route::resource('pages', AdminPageController::class)->except('show');
+        Route::resource('redirects', AdminRedirectController::class)->except('show');
         Route::resource('impact-metrics', AdminImpactMetricController::class)->except('show');
         Route::post('impact-metrics/{impact_metric}/values', [AdminImpactMetricValueController::class, 'store'])->name('impact-metrics.values.store');
         Route::delete('impact-metrics/{impact_metric}/values/{value}', [AdminImpactMetricValueController::class, 'destroy'])->name('impact-metrics.values.destroy');
@@ -102,3 +105,8 @@ Route::post('donations', [DonationController::class, 'store'])
     ->name('donations.store');
 
 require __DIR__.'/settings.php';
+
+// Must stay last — only reached once no other route has matched. Looks up
+// the requested path in the redirects table (saba.md §12.1) and issues the
+// configured redirect, or falls through to the normal 404 handling.
+Route::fallback(RedirectResolutionController::class);
