@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Seo from '@/components/Seo.vue';
 import { Button } from '@/components/ui/button';
 
@@ -18,6 +19,13 @@ const props = defineProps<{
 }>();
 
 const page = usePage<{ url: string }>();
+const origin = computed(() => new URL(page.props.url).origin);
+
+const breadcrumbItems = computed(() => [
+    { title: 'Home', href: '/' },
+    { title: 'Events', href: '/events' },
+    { title: props.event.title, href: '' },
+]);
 
 const schema = computed(() => [
     {
@@ -34,26 +42,15 @@ const schema = computed(() => [
     {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
-        itemListElement: [
-            {
-                '@type': 'ListItem',
-                position: 1,
-                name: 'Home',
-                item: new URL('/', page.props.url).href,
-            },
-            {
-                '@type': 'ListItem',
-                position: 2,
-                name: 'Events',
-                item: new URL('/events', page.props.url).href,
-            },
-            {
-                '@type': 'ListItem',
-                position: 3,
-                name: props.event.title,
-                item: page.props.url,
-            },
-        ],
+        itemListElement: breadcrumbItems.value.map((item, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: item.title,
+            item:
+                item.href === ''
+                    ? page.props.url
+                    : new URL(item.href, origin.value).href,
+        })),
     },
 ]);
 
@@ -74,6 +71,10 @@ function formatDate(value: string): string {
     />
 
     <article>
+        <div class="mx-auto max-w-3xl px-4 pt-6 sm:px-6 lg:px-8">
+            <Breadcrumbs :breadcrumbs="breadcrumbItems" />
+        </div>
+
         <section
             class="border-b border-border bg-primary text-primary-foreground"
         >

@@ -2,6 +2,7 @@
 import { Link, usePage } from '@inertiajs/vue3';
 import { AlertTriangle } from '@lucide/vue';
 import { computed } from 'vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Seo from '@/components/Seo.vue';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -34,6 +35,12 @@ const props = defineProps<{
 }>();
 
 const page = usePage<{ url: string }>();
+const origin = computed(() => new URL(page.props.url).origin);
+
+const breadcrumbItems = computed(() => [
+    { title: 'Home', href: '/' },
+    { title: 'About', href: '' },
+]);
 
 // Every FAQ answer here is a fact already confirmed elsewhere on this site
 // (audit-sourced). Questions that would need unverified numbers or
@@ -83,20 +90,15 @@ const schema = computed(() => [
     {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
-        itemListElement: [
-            {
-                '@type': 'ListItem',
-                position: 1,
-                name: 'Home',
-                item: new URL('/', page.props.url).href,
-            },
-            {
-                '@type': 'ListItem',
-                position: 2,
-                name: 'About',
-                item: page.props.url,
-            },
-        ],
+        itemListElement: breadcrumbItems.value.map((item, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: item.title,
+            item:
+                item.href === ''
+                    ? page.props.url
+                    : new URL(item.href, origin.value).href,
+        })),
     },
 ]);
 
@@ -116,6 +118,10 @@ function initials(name: string): string {
         description="Saba International is a nonprofit supporting education, nutrition, and shelter for underprivileged youth and their families in East Africa. Meet our team and learn our story."
         :schema="schema"
     />
+
+    <div class="mx-auto max-w-4xl px-4 pt-6 sm:px-6 lg:px-8">
+        <Breadcrumbs :breadcrumbs="breadcrumbItems" />
+    </div>
 
     <!-- Hero -->
     <section class="border-b border-border bg-primary text-primary-foreground">

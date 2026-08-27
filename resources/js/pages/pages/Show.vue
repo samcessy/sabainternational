@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Seo from '@/components/Seo.vue';
 
 type Page = {
@@ -20,24 +21,25 @@ const props = defineProps<{
 }>();
 
 const inertiaPage = usePage<{ url: string }>();
+const origin = computed(() => new URL(inertiaPage.props.url).origin);
+
+const breadcrumbItems = computed(() => [
+    { title: 'Home', href: '/' },
+    { title: props.page.title, href: '' },
+]);
 
 const schema = computed(() => ({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: [
-        {
-            '@type': 'ListItem',
-            position: 1,
-            name: 'Home',
-            item: new URL('/', inertiaPage.props.url).href,
-        },
-        {
-            '@type': 'ListItem',
-            position: 2,
-            name: props.page.title,
-            item: inertiaPage.props.url,
-        },
-    ],
+    itemListElement: breadcrumbItems.value.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.title,
+        item:
+            item.href === ''
+                ? inertiaPage.props.url
+                : new URL(item.href, origin.value).href,
+    })),
 }));
 </script>
 
@@ -50,6 +52,8 @@ const schema = computed(() => ({
     />
 
     <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+        <Breadcrumbs :breadcrumbs="breadcrumbItems" class="mb-6" />
+
         <h1 class="text-4xl font-bold tracking-tight text-foreground">
             {{ page.title }}
         </h1>

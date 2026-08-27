@@ -2,6 +2,7 @@
 import { Link, usePage } from '@inertiajs/vue3';
 import { Download } from '@lucide/vue';
 import { computed } from 'vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Seo from '@/components/Seo.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -23,30 +24,26 @@ const props = defineProps<{
 }>();
 
 const page = usePage<{ url: string }>();
+const origin = computed(() => new URL(page.props.url).origin);
+
+const breadcrumbItems = computed(() => [
+    { title: 'Home', href: '/' },
+    { title: 'Transparency Center', href: '/documents' },
+    { title: props.document.title, href: '' },
+]);
 
 const schema = computed(() => ({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: [
-        {
-            '@type': 'ListItem',
-            position: 1,
-            name: 'Home',
-            item: new URL('/', page.props.url).href,
-        },
-        {
-            '@type': 'ListItem',
-            position: 2,
-            name: 'Transparency Center',
-            item: new URL('/documents', page.props.url).href,
-        },
-        {
-            '@type': 'ListItem',
-            position: 3,
-            name: props.document.title,
-            item: page.props.url,
-        },
-    ],
+    itemListElement: breadcrumbItems.value.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.title,
+        item:
+            item.href === ''
+                ? page.props.url
+                : new URL(item.href, origin.value).href,
+    })),
 }));
 </script>
 
@@ -59,6 +56,10 @@ const schema = computed(() => ({
     />
 
     <article>
+        <div class="mx-auto max-w-3xl px-4 pt-6 sm:px-6 lg:px-8">
+            <Breadcrumbs :breadcrumbs="breadcrumbItems" />
+        </div>
+
         <section
             class="border-b border-border bg-primary text-primary-foreground"
         >
