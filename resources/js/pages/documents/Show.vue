@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { Download } from '@lucide/vue';
+import Seo from '@/components/Seo.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -22,7 +23,11 @@ defineProps<{
 </script>
 
 <template>
-    <Head :title="document.title" />
+    <Seo
+        :title="document.title"
+        :description="document.summary"
+        :image="document.cover_image_url"
+    />
 
     <article>
         <section

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form, Head, Link } from '@inertiajs/vue3';
+import { Form, Link } from '@inertiajs/vue3';
 import {
     Code2,
     GraduationCap,
@@ -9,6 +9,7 @@ import {
     Sparkles,
 } from '@lucide/vue';
 import InputError from '@/components/InputError.vue';
+import Seo from '@/components/Seo.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -84,7 +85,11 @@ const programs = [
 </script>
 
 <template>
-    <Head title="Home" />
+    <Seo
+        title=""
+        description="Saba International supports education, nutrition, and shelter for underprivileged youth and their families in East Africa."
+        image="/images/home-hero.jpg"
+    />
 
     <!-- Hero -->
     <section

@@ -50,6 +50,11 @@ class HandleInertiaRequests extends Middleware
                     : [],
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            // Canonical-URL default for the Seo component - individual
+            // pages can still pass their own `canonical` prop when the
+            // current request URL isn't the right one to index (e.g. a
+            // filtered listing).
+            'url' => $request->url(),
         ];
     }
 }

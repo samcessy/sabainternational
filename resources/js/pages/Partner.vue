@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Form, Head } from '@inertiajs/vue3';
+import { Form } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
+import Seo from '@/components/Seo.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -11,7 +12,10 @@ import { store } from '@/routes/partnership';
 </script>
 
 <template>
-    <Head title="Partner With Us" />
+    <Seo
+        title="Partner With Us"
+        description="Partner with Saba International to expand access to education, nutrition, and shelter for underprivileged youth in East Africa."
+    />
 
     <section class="mx-auto max-w-xl px-4 py-16 sm:px-6 lg:px-8">
         <h1 class="text-center text-3xl font-bold text-foreground">

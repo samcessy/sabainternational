@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Seo from '@/components/Seo.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -63,7 +64,7 @@ function pageHref(page: number): string {
 </script>
 
 <template>
-    <Head title="Search" />
+    <Seo title="Search" noindex />
 
     <section class="border-b border-border bg-primary text-primary-foreground">
         <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">

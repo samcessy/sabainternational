@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { Head, router } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 import { AlertTriangle } from '@lucide/vue';
 import { loadStripe } from '@stripe/stripe-js';
 import type { Stripe, StripeElements } from '@stripe/stripe-js';
 import { computed, nextTick, onBeforeUnmount, ref } from 'vue';
 import InputError from '@/components/InputError.vue';
+import Seo from '@/components/Seo.vue';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -199,7 +200,10 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <Head title="Give" />
+    <Seo
+        title="Give"
+        description="Support education, nutrition, and shelter for underprivileged youth and families in East Africa with a one-time or monthly gift."
+    />
 
     <section class="mx-auto max-w-xl px-4 py-16 sm:px-6 lg:px-8">
         <h1 class="text-center text-3xl font-bold text-foreground">

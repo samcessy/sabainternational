@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Seo from '@/components/Seo.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -12,6 +13,11 @@ type Story = {
     location: string | null;
     featured: boolean;
     program: { name: string; slug: string } | null;
+    seo: {
+        title: string | null;
+        description: string | null;
+        og_image: string | null;
+    };
     published_at: string | null;
 };
 
@@ -33,7 +39,12 @@ const storyTypeLabels: Record<string, string> = {
 </script>
 
 <template>
-    <Head :title="story.title" />
+    <Seo
+        :title="story.seo.title ?? story.title"
+        :description="story.seo.description ?? story.excerpt"
+        :image="story.seo.og_image"
+        type="article"
+    />
 
     <article>
         <section

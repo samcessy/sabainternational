@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { BookOpen } from '@lucide/vue';
+import Seo from '@/components/Seo.vue';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -45,7 +46,10 @@ const storyTypeLabels: Record<string, string> = {
 </script>
 
 <template>
-    <Head title="Stories & News" />
+    <Seo
+        title="Stories & News"
+        description="Stories of change from the children, families, and communities Saba International supports in East Africa."
+    />
 
     <section class="border-b border-border bg-primary text-primary-foreground">
         <div class="mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 lg:px-8">

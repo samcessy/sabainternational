@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Seo from '@/components/Seo.vue';
 import { Button } from '@/components/ui/button';
 
 type Program = {
@@ -14,6 +15,11 @@ type Program = {
     overview: string | null;
     what_happens_here: string | null;
     external_url: string | null;
+    seo: {
+        title: string | null;
+        description: string | null;
+        og_image: string | null;
+    };
 };
 
 defineProps<{
@@ -28,7 +34,11 @@ defineProps<{
 </script>
 
 <template>
-    <Head :title="program.name" />
+    <Seo
+        :title="program.seo.title ?? program.name"
+        :description="program.seo.description ?? program.short_description"
+        :image="program.seo.og_image"
+    />
 
     <section class="border-b border-border bg-primary text-primary-foreground">
         <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">

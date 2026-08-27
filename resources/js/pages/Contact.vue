@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Form, Head } from '@inertiajs/vue3';
+import { Form } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
+import Seo from '@/components/Seo.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -30,7 +31,10 @@ const subjects = [
 </script>
 
 <template>
-    <Head title="Contact" />
+    <Seo
+        title="Contact"
+        description="Get in touch with Saba International. Reach out about donations, partnerships, volunteering, or media inquiries."
+    />
 
     <section class="mx-auto max-w-xl px-4 py-16 sm:px-6 lg:px-8">
         <h1 class="text-center text-3xl font-bold text-foreground">

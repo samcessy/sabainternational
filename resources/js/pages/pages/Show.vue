@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import Seo from '@/components/Seo.vue';
 
 type Page = {
     title: string;
@@ -19,7 +19,11 @@ defineProps<{
 </script>
 
 <template>
-    <Head :title="page.seo.title ?? page.title" />
+    <Seo
+        :title="page.seo.title ?? page.title"
+        :description="page.seo.description"
+        :image="page.seo.og_image"
+    />
 
     <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
         <h1 class="text-4xl font-bold tracking-tight text-foreground">

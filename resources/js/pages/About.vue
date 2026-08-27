@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
 import { AlertTriangle } from '@lucide/vue';
+import Seo from '@/components/Seo.vue';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
@@ -50,7 +50,10 @@ function initials(name: string): string {
 </script>
 
 <template>
-    <Head title="About" />
+    <Seo
+        title="About"
+        description="Saba International is a nonprofit supporting education, nutrition, and shelter for underprivileged youth and their families in East Africa. Meet our team and learn our story."
+    />
 
     <!-- Hero -->
     <section class="border-b border-border bg-primary text-primary-foreground">

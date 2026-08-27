@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { HeartHandshake } from '@lucide/vue';
+import Seo from '@/components/Seo.vue';
 import { Button } from '@/components/ui/button';
 
 // Deliberately does not assume the donation has actually completed —
@@ -10,7 +11,7 @@ import { Button } from '@/components/ui/button';
 </script>
 
 <template>
-    <Head title="Thank You" />
+    <Seo title="Thank You" noindex />
 
     <section class="mx-auto max-w-xl px-4 py-24 text-center sm:px-6 lg:px-8">
         <HeartHandshake

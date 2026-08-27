@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import Seo from '@/components/Seo.vue';
 import { Button } from '@/components/ui/button';
 
 type Event = {
@@ -24,7 +25,7 @@ function formatDate(value: string): string {
 </script>
 
 <template>
-    <Head :title="event.title" />
+    <Seo :title="event.title" :description="event.description" type="article" />
 
     <article>
         <section
