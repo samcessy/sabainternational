@@ -4,6 +4,7 @@ import {
     BookOpen,
     CalendarDays,
     CircleDollarSign,
+    FileStack,
     FileText,
     FolderGit2,
     HandHeart,
@@ -44,6 +45,7 @@ import { index as eventsIndex } from '@/routes/admin/events';
 import { index as impactMetricsIndex } from '@/routes/admin/impact-metrics';
 import { index as mediaIndex } from '@/routes/admin/media';
 import { index as newsletterSubscribersIndex } from '@/routes/admin/newsletter-subscribers';
+import { index as pagesIndex } from '@/routes/admin/pages';
 import { index as partnershipInquiriesIndex } from '@/routes/admin/partnership-inquiries';
 import { index as programsIndex } from '@/routes/admin/programs';
 import { index as storiesIndex } from '@/routes/admin/stories';
@@ -95,6 +97,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Events',
                 href: eventsIndex.url(),
                 icon: CalendarDays,
+            },
+            {
+                title: 'Pages',
+                href: pagesIndex.url(),
+                icon: FileStack,
             },
         );
     }

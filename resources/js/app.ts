@@ -31,6 +31,7 @@ createInertiaApp({
             case publicPages.includes(name):
             case name.startsWith('programs/'):
             case name.startsWith('stories/'):
+            case name.startsWith('pages/'):
                 return PublicLayout;
             case name.startsWith('auth/'):
                 return AuthLayout;

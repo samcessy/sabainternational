@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ImpactMetricController as AdminImpactMetricContro
 use App\Http\Controllers\Admin\ImpactMetricValueController as AdminImpactMetricValueController;
 use App\Http\Controllers\Admin\MediaController as AdminMediaController;
 use App\Http\Controllers\Admin\NewsletterSubscriberController as AdminNewsletterSubscriberController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\PartnershipInquiryController as AdminPartnershipInquiryController;
 use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 use App\Http\Controllers\Admin\StoryController as AdminStoryController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\GivePageController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\NewsletterSubscriptionController;
 use App\Http\Controllers\NewsletterUnsubscribeController;
+use App\Http\Controllers\PagePageController;
 use App\Http\Controllers\PartnershipInquiryController;
 use App\Http\Controllers\PartnershipPageController;
 use App\Http\Controllers\ProgramPageController;
@@ -46,6 +48,7 @@ Route::get('programs', [ProgramPageController::class, 'index'])->name('programs.
 Route::get('programs/{slug}', [ProgramPageController::class, 'show'])->name('programs.show');
 Route::get('stories', [StoryPageController::class, 'index'])->name('stories.index');
 Route::get('stories/{slug}', [StoryPageController::class, 'show'])->name('stories.show');
+Route::get('pages/{slug}', [PagePageController::class, 'show'])->name('pages.show');
 
 Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
@@ -59,6 +62,7 @@ Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(fu
         Route::resource('campaigns', AdminCampaignController::class)->except('show');
         Route::resource('documents', AdminDocumentController::class)->except('show');
         Route::resource('events', AdminEventController::class)->except('show');
+        Route::resource('pages', AdminPageController::class)->except('show');
         Route::resource('impact-metrics', AdminImpactMetricController::class)->except('show');
         Route::post('impact-metrics/{impact_metric}/values', [AdminImpactMetricValueController::class, 'store'])->name('impact-metrics.values.store');
         Route::delete('impact-metrics/{impact_metric}/values/{value}', [AdminImpactMetricValueController::class, 'destroy'])->name('impact-metrics.values.destroy');
