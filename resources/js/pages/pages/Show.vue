@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import Seo from '@/components/Seo.vue';
 
 type Page = {
@@ -13,9 +15,30 @@ type Page = {
     published_at: string | null;
 };
 
-defineProps<{
+const props = defineProps<{
     page: Page;
 }>();
+
+const inertiaPage = usePage<{ url: string }>();
+
+const schema = computed(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+        {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: new URL('/', inertiaPage.props.url).href,
+        },
+        {
+            '@type': 'ListItem',
+            position: 2,
+            name: props.page.title,
+            item: inertiaPage.props.url,
+        },
+    ],
+}));
 </script>
 
 <template>
@@ -23,6 +46,7 @@ defineProps<{
         :title="page.seo.title ?? page.title"
         :description="page.seo.description"
         :image="page.seo.og_image"
+        :schema="schema"
     />
 
     <article class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">

@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { usePage } from '@inertiajs/vue3';
 import { AlertTriangle } from '@lucide/vue';
+import { computed } from 'vue';
 import Seo from '@/components/Seo.vue';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -11,9 +13,11 @@ type TeamMember = {
     board_member: boolean;
 };
 
-defineProps<{
+const props = defineProps<{
     teamMembers: TeamMember[];
 }>();
+
+const page = usePage<{ url: string }>();
 
 // Every FAQ answer here is a fact already confirmed elsewhere on this site
 // (audit-sourced). Questions that would need unverified numbers or
@@ -39,6 +43,47 @@ const faqs = [
     },
 ];
 
+const schema = computed(() => [
+    {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqs.map((faq) => ({
+            '@type': 'Question',
+            name: faq.question,
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: faq.answer,
+            },
+        })),
+    },
+    ...props.teamMembers.map((member) => ({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: member.name,
+        jobTitle: member.role,
+        description: member.bio,
+        worksFor: { '@type': 'NGO', name: 'Saba International' },
+    })),
+    {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: new URL('/', page.props.url).href,
+            },
+            {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'About',
+                item: page.props.url,
+            },
+        ],
+    },
+]);
+
 function initials(name: string): string {
     return name
         .split(' ')
@@ -53,6 +98,7 @@ function initials(name: string): string {
     <Seo
         title="About"
         description="Saba International is a nonprofit supporting education, nutrition, and shelter for underprivileged youth and their families in East Africa. Meet our team and learn our story."
+        :schema="schema"
     />
 
     <!-- Hero -->

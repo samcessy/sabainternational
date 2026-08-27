@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { Download } from '@lucide/vue';
+import { computed } from 'vue';
 import Seo from '@/components/Seo.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -17,9 +18,36 @@ type Document = {
     published_at: string | null;
 };
 
-defineProps<{
+const props = defineProps<{
     document: Document;
 }>();
+
+const page = usePage<{ url: string }>();
+
+const schema = computed(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+        {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: new URL('/', page.props.url).href,
+        },
+        {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Transparency Center',
+            item: new URL('/documents', page.props.url).href,
+        },
+        {
+            '@type': 'ListItem',
+            position: 3,
+            name: props.document.title,
+            item: page.props.url,
+        },
+    ],
+}));
 </script>
 
 <template>
@@ -27,6 +55,7 @@ defineProps<{
         :title="document.title"
         :description="document.summary"
         :image="document.cover_image_url"
+        :schema="schema"
     />
 
     <article>

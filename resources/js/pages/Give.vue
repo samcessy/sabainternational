@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import { AlertTriangle } from '@lucide/vue';
 import { loadStripe } from '@stripe/stripe-js';
 import type { Stripe, StripeElements } from '@stripe/stripe-js';
@@ -26,6 +26,19 @@ const props = defineProps<{
     stripeKey: string | null;
     programs: Program[];
 }>();
+
+const page = usePage<{ url: string }>();
+
+const donateActionSchema = computed(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'DonateAction',
+    name: 'Donate to Saba International',
+    target: new URL('/give', page.props.url).href,
+    recipient: {
+        '@type': 'NGO',
+        name: 'Saba International',
+    },
+}));
 
 // docs/product-requirements.md §3 — suggested amounts, in whole dollars for
 // display; converted to cents before hitting the API, matching
@@ -203,6 +216,7 @@ onBeforeUnmount(() => {
     <Seo
         title="Give"
         description="Support education, nutrition, and shelter for underprivileged youth and families in East Africa with a one-time or monthly gift."
+        :schema="donateActionSchema"
     />
 
     <section class="mx-auto max-w-xl px-4 py-16 sm:px-6 lg:px-8">

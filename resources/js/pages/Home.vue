@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form, Link } from '@inertiajs/vue3';
+import { Form, Link, usePage } from '@inertiajs/vue3';
 import {
     Code2,
     GraduationCap,
@@ -8,6 +8,7 @@ import {
     Salad,
     Sparkles,
 } from '@lucide/vue';
+import { computed } from 'vue';
 import InputError from '@/components/InputError.vue';
 import Seo from '@/components/Seo.vue';
 import { Button } from '@/components/ui/button';
@@ -82,6 +83,25 @@ const programs = [
             'Delivers software development training to economically disadvantaged youth to strengthen their earning potential.',
     },
 ];
+
+const page = usePage<{ url: string }>();
+
+// saba.md §15.3's WebSite schema — the SearchAction is what lets Google
+// show a sitelinks search box directly in results for this domain.
+const websiteSchema = computed(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Saba International',
+    url: new URL('/', page.props.url).href,
+    potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+            '@type': 'EntryPoint',
+            urlTemplate: `${new URL('/search', page.props.url).href}?q={search_term_string}`,
+        },
+        'query-input': 'required name=search_term_string',
+    },
+}));
 </script>
 
 <template>
@@ -89,6 +109,7 @@ const programs = [
         title=""
         description="Saba International supports education, nutrition, and shelter for underprivileged youth and their families in East Africa."
         image="/images/home-hero.jpg"
+        :schema="websiteSchema"
     />
 
     <!-- Hero -->

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import Seo from '@/components/Seo.vue';
 import { Button } from '@/components/ui/button';
 
@@ -12,9 +13,49 @@ type Event = {
     location: string | null;
 };
 
-defineProps<{
+const props = defineProps<{
     event: Event;
 }>();
+
+const page = usePage<{ url: string }>();
+
+const schema = computed(() => [
+    {
+        '@context': 'https://schema.org',
+        '@type': 'Event',
+        name: props.event.title,
+        description: props.event.description,
+        startDate: props.event.start_at,
+        endDate: props.event.end_at,
+        location: props.event.location
+            ? { '@type': 'Place', name: props.event.location }
+            : undefined,
+    },
+    {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: new URL('/', page.props.url).href,
+            },
+            {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Events',
+                item: new URL('/events', page.props.url).href,
+            },
+            {
+                '@type': 'ListItem',
+                position: 3,
+                name: props.event.title,
+                item: page.props.url,
+            },
+        ],
+    },
+]);
 
 function formatDate(value: string): string {
     return new Date(value).toLocaleString(undefined, {
@@ -25,7 +66,12 @@ function formatDate(value: string): string {
 </script>
 
 <template>
-    <Seo :title="event.title" :description="event.description" type="article" />
+    <Seo
+        :title="event.title"
+        :description="event.description"
+        type="article"
+        :schema="schema"
+    />
 
     <article>
         <section

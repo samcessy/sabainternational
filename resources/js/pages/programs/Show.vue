@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import Seo from '@/components/Seo.vue';
 import { Button } from '@/components/ui/button';
 
@@ -22,9 +23,36 @@ type Program = {
     };
 };
 
-defineProps<{
+const props = defineProps<{
     program: Program;
 }>();
+
+const page = usePage<{ url: string }>();
+
+const schema = computed(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+        {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: new URL('/', page.props.url).href,
+        },
+        {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Our Programs',
+            item: new URL('/programs', page.props.url).href,
+        },
+        {
+            '@type': 'ListItem',
+            position: 3,
+            name: props.program.name,
+            item: page.props.url,
+        },
+    ],
+}));
 
 // Structure follows saba.md §6.1's Problem→Context→Role narrative, using
 // only what's actually verified (docs/audit/current-website-audit.md) —
@@ -38,6 +66,7 @@ defineProps<{
         :title="program.seo.title ?? program.name"
         :description="program.seo.description ?? program.short_description"
         :image="program.seo.og_image"
+        :schema="schema"
     />
 
     <section class="border-b border-border bg-primary text-primary-foreground">

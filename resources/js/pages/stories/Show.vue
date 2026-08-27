@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import Seo from '@/components/Seo.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -21,9 +22,49 @@ type Story = {
     published_at: string | null;
 };
 
-defineProps<{
+const props = defineProps<{
     story: Story;
 }>();
+
+const page = usePage<{ url: string }>();
+
+const schema = computed(() => [
+    {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: props.story.title,
+        description: props.story.seo.description ?? props.story.excerpt,
+        image: props.story.seo.og_image
+            ? new URL(props.story.seo.og_image, page.props.url).href
+            : undefined,
+        datePublished: props.story.published_at,
+        publisher: { '@type': 'NGO', name: 'Saba International' },
+    },
+    {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: new URL('/', page.props.url).href,
+            },
+            {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Stories',
+                item: new URL('/stories', page.props.url).href,
+            },
+            {
+                '@type': 'ListItem',
+                position: 3,
+                name: props.story.title,
+                item: page.props.url,
+            },
+        ],
+    },
+]);
 
 const storyTypeLabels: Record<string, string> = {
     story_of_change: 'Story of Change',
@@ -44,6 +85,7 @@ const storyTypeLabels: Record<string, string> = {
         :description="story.seo.description ?? story.excerpt"
         :image="story.seo.og_image"
         type="article"
+        :schema="schema"
     />
 
     <article>
