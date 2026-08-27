@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePage } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { AlertTriangle } from '@lucide/vue';
 import { computed } from 'vue';
 import Seo from '@/components/Seo.vue';
@@ -13,8 +13,24 @@ type TeamMember = {
     board_member: boolean;
 };
 
+type GovernanceDocument = {
+    id: number;
+    title: string;
+    summary: string | null;
+};
+
+type FinancialDocument = {
+    id: number;
+    title: string;
+    document_type_label: string;
+    year: number | null;
+    summary: string | null;
+};
+
 const props = defineProps<{
     teamMembers: TeamMember[];
+    governanceDocuments: GovernanceDocument[];
+    financialDocuments: FinancialDocument[];
 }>();
 
 const page = usePage<{ url: string }>();
@@ -174,7 +190,28 @@ function initials(name: string): string {
             <h2 class="text-2xl font-bold text-foreground sm:text-3xl">
                 Governance
             </h2>
-            <Alert class="mt-6">
+            <div
+                v-if="governanceDocuments.length > 0"
+                class="mt-6 grid gap-3 sm:grid-cols-2"
+            >
+                <Link
+                    v-for="document in governanceDocuments"
+                    :key="document.id"
+                    :href="`/documents/${document.id}`"
+                    class="block rounded-lg border border-border bg-card p-4 transition-shadow hover:shadow-md"
+                >
+                    <p class="font-medium text-foreground">
+                        {{ document.title }}
+                    </p>
+                    <p
+                        v-if="document.summary"
+                        class="mt-1 text-sm text-muted-foreground"
+                    >
+                        {{ document.summary }}
+                    </p>
+                </Link>
+            </div>
+            <Alert v-else class="mt-6">
                 <AlertTriangle class="size-4" />
                 <AlertTitle>Content required</AlertTitle>
                 <AlertDescription>
@@ -196,7 +233,33 @@ function initials(name: string): string {
         <h2 class="text-2xl font-bold text-foreground sm:text-3xl">
             Financial Transparency
         </h2>
-        <Alert class="mt-6">
+        <div
+            v-if="financialDocuments.length > 0"
+            class="mt-6 grid gap-3 sm:grid-cols-2"
+        >
+            <Link
+                v-for="document in financialDocuments"
+                :key="document.id"
+                :href="`/documents/${document.id}`"
+                class="block rounded-lg border border-border bg-card p-4 transition-shadow hover:shadow-md"
+            >
+                <div class="flex items-center justify-between gap-2">
+                    <p class="font-medium text-foreground">
+                        {{ document.title }}
+                    </p>
+                    <span
+                        v-if="document.year"
+                        class="shrink-0 text-sm text-muted-foreground"
+                    >
+                        {{ document.year }}
+                    </span>
+                </div>
+                <p class="mt-1 text-xs text-muted-foreground">
+                    {{ document.document_type_label }}
+                </p>
+            </Link>
+        </div>
+        <Alert v-else class="mt-6">
             <AlertTriangle class="size-4" />
             <AlertTitle>Content required</AlertTitle>
             <AlertDescription>
