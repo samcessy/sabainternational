@@ -38,7 +38,7 @@ class StoryPageController extends Controller
         $story = Story::query()
             ->where('status', ContentStatus::Published)
             ->where('slug', $slug)
-            ->with('program')
+            ->with(['program', 'tags'])
             ->firstOrFail();
 
         return Inertia::render('stories/Show', [

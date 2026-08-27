@@ -15,6 +15,7 @@ type Story = {
     location: string | null;
     featured: boolean;
     program: { name: string; slug: string } | null;
+    tags: { name: string; slug: string }[];
     seo: {
         title: string | null;
         description: string | null;
@@ -47,6 +48,10 @@ const schema = computed(() => [
             : undefined,
         datePublished: props.story.published_at,
         publisher: { '@type': 'NGO', name: 'Saba International' },
+        keywords:
+            props.story.tags.length > 0
+                ? props.story.tags.map((tag) => tag.name).join(', ')
+                : undefined,
     },
     {
         '@context': 'https://schema.org',
@@ -130,6 +135,18 @@ const storyTypeLabels: Record<string, string> = {
                 class="mt-8 space-y-4 whitespace-pre-line text-muted-foreground"
             >
                 {{ story.body }}
+            </div>
+
+            <div v-if="story.tags.length > 0" class="mt-6 flex flex-wrap gap-2">
+                <Link
+                    v-for="tag in story.tags"
+                    :key="tag.slug"
+                    :href="`/search?type=story&q=${encodeURIComponent(tag.name)}`"
+                >
+                    <Badge variant="outline" class="hover:bg-accent">
+                        {{ tag.name }}
+                    </Badge>
+                </Link>
             </div>
 
             <div class="mt-10 flex flex-wrap gap-3">

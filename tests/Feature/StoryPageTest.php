@@ -2,6 +2,7 @@
 
 use App\Enums\ContentStatus;
 use App\Models\Story;
+use App\Models\StoryTag;
 use Inertia\Testing\AssertableInertia as Assert;
 
 test('the stories index renders only published stories', function () {
@@ -39,4 +40,18 @@ test('a draft story returns 404 on its show page', function () {
 
 test('a nonexistent story slug returns 404', function () {
     $this->get(route('stories.show', 'does-not-exist'))->assertNotFound();
+});
+
+test('a published story show page includes its tags', function () {
+    $tag = StoryTag::factory()->create(['name' => 'Education']);
+    $story = Story::factory()->published()->create(['slug' => 'a-story-of-change']);
+    $story->tags()->attach($tag);
+
+    $response = $this->get(route('stories.show', 'a-story-of-change'));
+
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('stories/Show')
+        ->has('story.tags', 1)
+        ->where('story.tags.0.name', 'Education')
+    );
 });

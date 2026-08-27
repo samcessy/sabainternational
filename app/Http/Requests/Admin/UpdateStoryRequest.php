@@ -61,6 +61,8 @@ class UpdateStoryRequest extends FormRequest
             'og_image' => ['nullable', 'string', 'max:255'],
             'status' => ['required', new Enum(ContentStatus::class)],
             'featured' => ['boolean'],
+            'tag_ids' => ['array'],
+            'tag_ids.*' => ['integer', 'exists:story_tags,id'],
         ];
     }
 }

@@ -18,6 +18,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 type Option = { value: string; label: string };
 type ProgramOption = { id: number; name: string };
+type TagOption = { id: number; name: string };
 
 type StoryValues = {
     title?: string;
@@ -41,6 +42,7 @@ type StoryValues = {
     og_image?: string | null;
     status?: string;
     featured?: boolean;
+    tag_ids?: number[];
 };
 
 withDefaults(
@@ -48,6 +50,7 @@ withDefaults(
         formTarget: { action: string; method: 'get' | 'post' };
         story?: StoryValues | null;
         programOptions: ProgramOption[];
+        tagOptions: TagOption[];
         storyTypeOptions: Option[];
         consentStatusOptions: Option[];
         imageConsentOptions: Option[];
@@ -194,6 +197,28 @@ withDefaults(
                     :message="errors.program_id"
                 />
             </div>
+        </div>
+
+        <div v-if="tagOptions.length > 0" class="space-y-2">
+            <Label>Tags (optional)</Label>
+            <div class="flex flex-wrap gap-4">
+                <div
+                    v-for="tag in tagOptions"
+                    :key="tag.id"
+                    class="flex items-center gap-2"
+                >
+                    <Checkbox
+                        :id="`tag-${tag.id}`"
+                        name="tag_ids[]"
+                        :value="tag.id"
+                        :default-value="(story?.tag_ids ?? []).includes(tag.id)"
+                    />
+                    <Label :for="`tag-${tag.id}`" class="font-normal">
+                        {{ tag.name }}
+                    </Label>
+                </div>
+            </div>
+            <InputError :message="errors.tag_ids" />
         </div>
 
         <div class="space-y-2">

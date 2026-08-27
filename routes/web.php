@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PartnershipInquiryController as AdminPartnershipI
 use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 use App\Http\Controllers\Admin\RedirectController as AdminRedirectController;
 use App\Http\Controllers\Admin\StoryController as AdminStoryController;
+use App\Http\Controllers\Admin\StoryTagController as AdminStoryTagController;
 use App\Http\Controllers\Admin\TeamMemberController as AdminTeamMemberController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\VolunteerApplicationController as AdminVolunteerApplicationController;
@@ -70,6 +71,7 @@ Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(fu
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('programs', AdminProgramController::class)->except('show');
         Route::resource('stories', AdminStoryController::class)->except('show');
+        Route::resource('story-tags', AdminStoryTagController::class)->except('show');
         Route::resource('team-members', AdminTeamMemberController::class)->except('show');
         Route::resource('campaigns', AdminCampaignController::class)->except('show');
         Route::resource('documents', AdminDocumentController::class)->except('show');

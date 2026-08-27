@@ -6,9 +6,11 @@ import { index, store } from '@/routes/admin/stories';
 
 type Option = { value: string; label: string };
 type ProgramOption = { id: number; name: string };
+type TagOption = { id: number; name: string };
 
 defineProps<{
     programOptions: ProgramOption[];
+    tagOptions: TagOption[];
     storyTypeOptions: Option[];
     consentStatusOptions: Option[];
     imageConsentOptions: Option[];
@@ -38,6 +40,7 @@ defineOptions({
             class="mt-6"
             :form-target="store.form()"
             :program-options="programOptions"
+            :tag-options="tagOptions"
             :story-type-options="storyTypeOptions"
             :consent-status-options="consentStatusOptions"
             :image-consent-options="imageConsentOptions"

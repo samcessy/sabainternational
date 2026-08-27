@@ -6,6 +6,7 @@ import { index, update } from '@/routes/admin/stories';
 
 type Option = { value: string; label: string };
 type ProgramOption = { id: number; name: string };
+type TagOption = { id: number; name: string };
 
 type Story = {
     id: number;
@@ -28,11 +29,13 @@ type Story = {
     og_image: string | null;
     status: string;
     featured: boolean;
+    tag_ids: number[];
 };
 
 const props = defineProps<{
     story: Story;
     programOptions: ProgramOption[];
+    tagOptions: TagOption[];
     storyTypeOptions: Option[];
     consentStatusOptions: Option[];
     imageConsentOptions: Option[];
@@ -65,6 +68,7 @@ defineOptions({
             :form-target="update.form(props.story.id)"
             :story="story"
             :program-options="programOptions"
+            :tag-options="tagOptions"
             :story-type-options="storyTypeOptions"
             :consent-status-options="consentStatusOptions"
             :image-consent-options="imageConsentOptions"

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Story;
+use App\Models\StoryTag;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -28,6 +29,10 @@ class StoryResource extends JsonResource
                 'name' => $this->program->name,
                 'slug' => $this->program->slug,
             ]),
+            'tags' => $this->whenLoaded('tags', fn () => $this->tags->map(fn (StoryTag $tag) => [
+                'name' => $tag->name,
+                'slug' => $tag->slug,
+            ])),
             'seo' => [
                 'title' => $this->seo_title,
                 'description' => $this->seo_description,

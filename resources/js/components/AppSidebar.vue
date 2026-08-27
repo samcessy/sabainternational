@@ -17,6 +17,7 @@ import {
     Route as RouteIcon,
     ScrollText,
     Send,
+    Tag,
     TrendingUp,
     UserCheck,
     Users,
@@ -51,6 +52,7 @@ import { index as partnershipInquiriesIndex } from '@/routes/admin/partnership-i
 import { index as programsIndex } from '@/routes/admin/programs';
 import { index as redirectsIndex } from '@/routes/admin/redirects';
 import { index as storiesIndex } from '@/routes/admin/stories';
+import { index as storyTagsIndex } from '@/routes/admin/story-tags';
 import { index as teamMembersIndex } from '@/routes/admin/team-members';
 import { index as usersIndex } from '@/routes/admin/users';
 import { index as volunteerApplicationsIndex } from '@/routes/admin/volunteer-applications';
@@ -79,6 +81,11 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Stories',
                 href: storiesIndex.url(),
                 icon: NotebookText,
+            },
+            {
+                title: 'Story Tags',
+                href: storyTagsIndex.url(),
+                icon: Tag,
             },
             {
                 title: 'Team Members',

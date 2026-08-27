@@ -13,6 +13,7 @@ use App\Http\Requests\Admin\StoreStoryRequest;
 use App\Http\Requests\Admin\UpdateStoryRequest;
 use App\Models\Program;
 use App\Models\Story;
+use App\Models\StoryTag;
 use App\Services\AuditLogger;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -55,6 +56,8 @@ class StoryController extends Controller
     public function store(StoreStoryRequest $request): RedirectResponse
     {
         $data = $this->normalizeBooleans($request);
+        $tagIds = $data['tag_ids'] ?? [];
+        unset($data['tag_ids']);
         $data['author_id'] = $request->user()->id;
 
         if ($data['status'] === ContentStatus::Published->value) {
@@ -62,6 +65,7 @@ class StoryController extends Controller
         }
 
         $story = Story::create($data);
+        $story->tags()->sync($tagIds);
 
         $this->auditLogger->log($request->user(), 'create', $story, newValues: $data);
 
@@ -86,6 +90,7 @@ class StoryController extends Controller
                     'attribution', 'seo_title', 'seo_description', 'og_image', 'status', 'featured',
                 ]),
                 'featured_image_thumbnail_url' => $story->featuredImage?->thumbnailUrl(),
+                'tag_ids' => $story->tags->pluck('id'),
             ],
             ...$this->formOptions(),
         ]);
@@ -95,12 +100,15 @@ class StoryController extends Controller
     {
         $oldValues = $story->only(array_keys($request->validated()));
         $data = $this->normalizeBooleans($request);
+        $tagIds = $data['tag_ids'] ?? [];
+        unset($data['tag_ids']);
 
         if ($data['status'] === ContentStatus::Published->value && $story->published_at === null) {
             $data['published_at'] = now();
         }
 
         $story->update($data);
+        $story->tags()->sync($tagIds);
 
         $this->auditLogger->log($request->user(), 'update', $story, $oldValues, $data);
 
@@ -151,6 +159,7 @@ class StoryController extends Controller
     {
         return [
             'programOptions' => Program::query()->orderBy('name')->get(['id', 'name']),
+            'tagOptions' => StoryTag::query()->orderBy('name')->get(['id', 'name']),
             'storyTypeOptions' => StoryType::options(),
             'consentStatusOptions' => ConsentStatus::options(),
             'imageConsentOptions' => ImageConsentStatus::options(),

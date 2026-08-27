@@ -8,6 +8,7 @@ use App\Enums\SensitiveContentClassification;
 use App\Enums\StoryType;
 use App\Models\Media;
 use App\Models\Story;
+use App\Models\StoryTag;
 use Inertia\Testing\AssertableInertia as Assert;
 
 function validStoryPayload(array $overrides = []): array
@@ -203,5 +204,56 @@ test('editing a story exposes its featured image thumbnail for the picker previe
 
     $response->assertInertia(fn (Assert $page) => $page
         ->where('story.featured_image_media_id', $media->id)
+    );
+});
+
+test('creating a story with tag_ids assigns those tags', function () {
+    $tags = StoryTag::factory()->count(2)->create();
+    $editor = actingAsAdmin();
+
+    $this->actingAs($editor)->post(route('admin.stories.store'), validStoryPayload([
+        'tag_ids' => $tags->pluck('id')->all(),
+    ]));
+
+    $story = Story::query()->where('slug', 'a-story-of-change')->firstOrFail();
+    expect($story->tags->pluck('id')->sort()->values()->all())->toBe($tags->pluck('id')->sort()->values()->all());
+});
+
+test('updating a story re-syncs its tags, removing ones no longer selected', function () {
+    [$keep, $drop, $add] = StoryTag::factory()->count(3)->create();
+    $story = Story::factory()->create(['slug' => 'a-story-of-change']);
+    $story->tags()->sync([$keep->id, $drop->id]);
+    $editor = actingAsAdmin();
+
+    $this->actingAs($editor)->put(route('admin.stories.update', $story), validStoryPayload([
+        'slug' => $story->slug,
+        'tag_ids' => [$keep->id, $add->id],
+    ]));
+
+    $tagIds = $story->fresh()->tags->pluck('id')->sort()->values()->all();
+    expect($tagIds)->toBe(collect([$keep->id, $add->id])->sort()->values()->all());
+});
+
+test('updating a story with no tag_ids clears all its tags', function () {
+    $tag = StoryTag::factory()->create();
+    $story = Story::factory()->create(['slug' => 'a-story-of-change']);
+    $story->tags()->sync([$tag->id]);
+    $editor = actingAsAdmin();
+
+    $this->actingAs($editor)->put(route('admin.stories.update', $story), validStoryPayload(['slug' => $story->slug]));
+
+    expect($story->fresh()->tags)->toHaveCount(0);
+});
+
+test('editing a story exposes its current tag_ids', function () {
+    $tag = StoryTag::factory()->create();
+    $story = Story::factory()->create();
+    $story->tags()->attach($tag);
+    $editor = actingAsAdmin();
+
+    $response = $this->actingAs($editor)->get(route('admin.stories.edit', $story));
+
+    $response->assertInertia(fn (Assert $page) => $page
+        ->where('story.tag_ids', [$tag->id])
     );
 });
