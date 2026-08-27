@@ -22,7 +22,9 @@ use App\Http\Controllers\Admin\VolunteerApplicationController as AdminVolunteerA
 use App\Http\Controllers\ContactPageController;
 use App\Http\Controllers\ContactSubmissionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentPageController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\EventPageController;
 use App\Http\Controllers\GivePageController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\NewsletterSubscriptionController;
@@ -51,6 +53,10 @@ Route::get('programs/{slug}', [ProgramPageController::class, 'show'])->name('pro
 Route::get('stories', [StoryPageController::class, 'index'])->name('stories.index');
 Route::get('stories/{slug}', [StoryPageController::class, 'show'])->name('stories.show');
 Route::get('pages/{slug}', [PagePageController::class, 'show'])->name('pages.show');
+Route::get('documents', [DocumentPageController::class, 'index'])->name('documents.index');
+Route::get('documents/{document}', [DocumentPageController::class, 'show'])->name('documents.show');
+Route::get('events', [EventPageController::class, 'index'])->name('events.index');
+Route::get('events/{slug}', [EventPageController::class, 'show'])->name('events.show');
 
 Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');

@@ -69,4 +69,13 @@ class Media extends Model
 
         return $thumbnail ? Storage::disk('public')->url($thumbnail->path) : null;
     }
+
+    /**
+     * The original uploaded file - used for non-image downloads (e.g. a
+     * Document's PDF) where a resized variant doesn't apply.
+     */
+    public function url(): string
+    {
+        return Storage::disk('public')->url($this->path);
+    }
 }
