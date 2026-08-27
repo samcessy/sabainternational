@@ -26,6 +26,18 @@ import { subscribe } from '@/routes/newsletter';
 // qualitative language or an honest "coming soon" state instead, per
 // saba.md §6.3 and §35's "never fabricate" rule.
 
+type ImpactMetric = {
+    id: number;
+    name: string;
+    unit: string;
+    program: string | null;
+    value: string;
+};
+
+defineProps<{
+    impactMetrics: ImpactMetric[];
+}>();
+
 const pillars = [
     {
         icon: GraduationCap,
@@ -85,6 +97,12 @@ const programs = [
 ];
 
 const page = usePage<{ url: string }>();
+
+function formatMetricValue(value: string): string {
+    return Number(value).toLocaleString(undefined, {
+        maximumFractionDigits: Number.isInteger(Number(value)) ? 0 : 2,
+    });
+}
 
 // saba.md §15.3's WebSite schema — the SearchAction is what lets Google
 // show a sitelinks search box directly in results for this domain.
@@ -325,7 +343,35 @@ const websiteSchema = computed(() => ({
                 development skills to support themselves and their communities.
             </li>
         </ul>
+        <div v-if="impactMetrics.length > 0" class="mt-10">
+            <h3
+                class="text-center text-sm font-semibold text-muted-foreground uppercase"
+            >
+                Verified Impact
+            </h3>
+            <div class="mx-auto mt-4 grid max-w-3xl gap-6 sm:grid-cols-3">
+                <div
+                    v-for="metric in impactMetrics"
+                    :key="metric.id"
+                    class="text-center"
+                >
+                    <p class="text-3xl font-bold text-primary">
+                        {{ formatMetricValue(metric.value) }}
+                        <span class="text-lg font-medium">{{
+                            metric.unit
+                        }}</span>
+                    </p>
+                    <p class="mt-1 text-sm text-muted-foreground">
+                        {{ metric.name }}
+                        <template v-if="metric.program">
+                            · {{ metric.program }}</template
+                        >
+                    </p>
+                </div>
+            </div>
+        </div>
         <p
+            v-else
             class="mx-auto mt-6 max-w-2xl text-center text-sm text-muted-foreground italic"
         >
             Verified financial breakdowns and impact metrics will be published
