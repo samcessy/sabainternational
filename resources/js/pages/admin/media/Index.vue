@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Head, Link, router, usePage } from '@inertiajs/vue3';
-import { ImageOff, Trash2, Upload } from '@lucide/vue';
+import { Form, Head, Link, router, usePage } from '@inertiajs/vue3';
+import { ImageOff, SquarePen, Trash2, Upload } from '@lucide/vue';
 import { ref } from 'vue';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
@@ -23,7 +23,11 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import { dashboard } from '@/routes';
-import { index, destroy as destroyMedia } from '@/routes/admin/media';
+import {
+    index,
+    destroy as destroyMedia,
+    update as updateMedia,
+} from '@/routes/admin/media';
 import { store as storeMedia } from '@/routes/media';
 import type { Auth } from '@/types';
 
@@ -33,8 +37,12 @@ type MediaItem = {
     id: number;
     filename: string;
     alt_text: string | null;
+    caption: string | null;
+    photographer: string | null;
+    copyright_license: string | null;
     consent_status: string | null;
     consent_status_label: string | null;
+    is_image: boolean;
     program: string | null;
     story: string | null;
     thumbnail_url: string | null;
@@ -64,6 +72,7 @@ const page = usePage<{ auth: Auth }>();
 const canManage = () => page.props.auth.permissions.includes('content:manage');
 
 const pendingDelete = ref<MediaItem | null>(null);
+const editingMedia = ref<MediaItem | null>(null);
 const uploading = ref(false);
 const uploadError = ref<string | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -254,7 +263,15 @@ function decodeLabel(label: string): string {
                     >
                         {{ item.program ?? item.story }}
                     </p>
-                    <div v-if="canManage()" class="flex justify-end pt-1">
+                    <div v-if="canManage()" class="flex justify-end gap-1 pt-1">
+                        <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            :aria-label="`Edit ${item.alt_text ?? item.filename}`"
+                            @click="editingMedia = item"
+                        >
+                            <SquarePen class="size-4" aria-hidden="true" />
+                        </Button>
                         <Button
                             variant="ghost"
                             size="icon-sm"
@@ -312,6 +329,126 @@ function decodeLabel(label: string): string {
                     Delete
                 </Button>
             </DialogFooter>
+        </DialogContent>
+    </Dialog>
+
+    <Dialog
+        :open="editingMedia !== null"
+        @update:open="(open) => (editingMedia = open ? editingMedia : null)"
+    >
+        <DialogContent v-if="editingMedia">
+            <DialogHeader>
+                <DialogTitle>Edit {{ editingMedia.filename }}</DialogTitle>
+                <DialogDescription>
+                    Update this file's alt text and other metadata.
+                </DialogDescription>
+            </DialogHeader>
+
+            <Form
+                :key="editingMedia.id"
+                v-bind="updateMedia.form(editingMedia.id)"
+                v-slot="{ errors, processing }"
+                class="space-y-4"
+                @success="editingMedia = null"
+            >
+                <div class="space-y-2">
+                    <Label for="edit_alt_text">
+                        Alt Text{{ editingMedia.is_image ? ' (required)' : '' }}
+                    </Label>
+                    <Input
+                        id="edit_alt_text"
+                        name="alt_text"
+                        :default-value="editingMedia.alt_text ?? undefined"
+                        :aria-invalid="!!errors.alt_text"
+                    />
+                    <InputError :message="errors.alt_text" />
+                </div>
+
+                <div class="space-y-2">
+                    <Label for="edit_caption">Caption</Label>
+                    <Input
+                        id="edit_caption"
+                        name="caption"
+                        :default-value="editingMedia.caption ?? undefined"
+                        :aria-invalid="!!errors.caption"
+                    />
+                    <InputError :message="errors.caption" />
+                </div>
+
+                <div class="space-y-2">
+                    <Label for="edit_photographer">Photographer</Label>
+                    <Input
+                        id="edit_photographer"
+                        name="photographer"
+                        :default-value="editingMedia.photographer ?? undefined"
+                        :aria-invalid="!!errors.photographer"
+                    />
+                    <InputError :message="errors.photographer" />
+                </div>
+
+                <div class="space-y-2">
+                    <Label for="edit_copyright_license">
+                        Copyright / License
+                    </Label>
+                    <Input
+                        id="edit_copyright_license"
+                        name="copyright_license"
+                        :default-value="
+                            editingMedia.copyright_license ?? undefined
+                        "
+                        :aria-invalid="!!errors.copyright_license"
+                    />
+                    <InputError :message="errors.copyright_license" />
+                </div>
+
+                <div class="space-y-2">
+                    <Label for="edit_consent_status">
+                        Consent Status{{
+                            editingMedia.is_image ? ' (required)' : ''
+                        }}
+                    </Label>
+                    <Select
+                        name="consent_status"
+                        :default-value="
+                            editingMedia.consent_status ?? undefined
+                        "
+                    >
+                        <SelectTrigger
+                            id="edit_consent_status"
+                            class="w-full"
+                            :aria-invalid="!!errors.consent_status"
+                        >
+                            <SelectValue
+                                placeholder="Choose a consent status"
+                            />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem
+                                v-for="option in imageConsentOptions"
+                                :key="option.value"
+                                :value="option.value"
+                            >
+                                {{ option.label }}
+                            </SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <InputError :message="errors.consent_status" />
+                </div>
+
+                <DialogFooter>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        @click="editingMedia = null"
+                    >
+                        Cancel
+                    </Button>
+                    <Button type="submit" variant="cta" :disabled="processing">
+                        <Spinner v-if="processing" />
+                        Save Changes
+                    </Button>
+                </DialogFooter>
+            </Form>
         </DialogContent>
     </Dialog>
 </template>

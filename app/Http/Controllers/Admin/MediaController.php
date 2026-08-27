@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\ImageConsentStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdateMediaRequest;
 use App\Models\Media;
 use App\Services\AuditLogger;
 use Illuminate\Http\JsonResponse;
@@ -15,9 +16,8 @@ use Inertia\Response;
 /**
  * Upload itself is handled by the existing public MediaController::store()
  * (admin/media, saba.md's media-architecture.md §1) - this page's uploader
- * posts there directly rather than duplicating that logic. Only browsing
- * and deletion live here. Editing alt_text/consent_status after upload is
- * deferred - not built yet.
+ * posts there directly rather than duplicating that logic. Browsing,
+ * metadata editing, and deletion live here.
  */
 class MediaController extends Controller
 {
@@ -36,8 +36,12 @@ class MediaController extends Controller
                     'id' => $item->id,
                     'filename' => $item->filename,
                     'alt_text' => $item->alt_text,
+                    'caption' => $item->caption,
+                    'photographer' => $item->photographer,
+                    'copyright_license' => $item->copyright_license,
                     'consent_status' => $item->consent_status?->value,
                     'consent_status_label' => $item->consent_status?->label(),
+                    'is_image' => $item->isImage(),
                     'program' => $item->program?->name,
                     'story' => $item->story?->title,
                     'thumbnail_url' => $item->thumbnailUrl(),
@@ -72,6 +76,23 @@ class MediaController extends Controller
                     'thumbnail_url' => $item->thumbnailUrl(),
                 ]),
         ]);
+    }
+
+    public function update(UpdateMediaRequest $request, Media $media): RedirectResponse
+    {
+        $data = $request->validated();
+        $oldValues = $media->only(array_keys($data));
+
+        $media->update($data);
+
+        $this->auditLogger->log($request->user(), 'update', $media, $oldValues, $data);
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => "\"{$media->filename}\" was updated.",
+        ]);
+
+        return to_route('admin.media.index');
     }
 
     public function destroy(Media $media): RedirectResponse

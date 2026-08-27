@@ -79,3 +79,76 @@ test('a viewer can also fetch the media picker list (ViewContent, not ManageCont
 test('guests cannot fetch the media picker list', function () {
     $this->getJson(route('admin.media.picker'))->assertUnauthorized();
 });
+
+test('an editor can update media metadata and it is audit logged', function () {
+    $media = Media::factory()->create(['alt_text' => 'Old alt text']);
+    $editor = actingAsAdmin();
+
+    $response = $this->actingAs($editor)->put(route('admin.media.update', $media), [
+        'alt_text' => 'New alt text',
+        'caption' => 'A caption',
+        'photographer' => 'Jane Doe',
+        'copyright_license' => 'CC BY 4.0',
+        'consent_status' => 'yes',
+    ]);
+
+    $response->assertRedirect(route('admin.media.index'));
+    $this->assertDatabaseHas('media', [
+        'id' => $media->id,
+        'alt_text' => 'New alt text',
+        'caption' => 'A caption',
+        'photographer' => 'Jane Doe',
+        'copyright_license' => 'CC BY 4.0',
+    ]);
+    $this->assertDatabaseHas('audit_logs', [
+        'user_id' => $editor->id,
+        'action' => 'update',
+        'entity_type' => 'media',
+        'entity_id' => $media->id,
+    ]);
+});
+
+test('a viewer cannot update media', function () {
+    $media = Media::factory()->create();
+    $viewer = actingAsAdmin(AdminRole::Viewer);
+
+    $this->actingAs($viewer)
+        ->put(route('admin.media.update', $media), ['alt_text' => 'x', 'consent_status' => 'yes'])
+        ->assertForbidden();
+});
+
+test('alt_text and consent_status are required when updating an image', function () {
+    $media = Media::factory()->create(['path' => 'media/photo.jpg']);
+    $editor = actingAsAdmin();
+
+    $this->actingAs($editor)
+        ->put(route('admin.media.update', $media), ['alt_text' => '', 'consent_status' => ''])
+        ->assertSessionHasErrors(['alt_text', 'consent_status']);
+});
+
+test('alt_text and consent_status are optional when updating a non-image file', function () {
+    $media = Media::factory()->create(['path' => 'media/report.pdf', 'alt_text' => null, 'consent_status' => null]);
+    $editor = actingAsAdmin();
+
+    $response = $this->actingAs($editor)->put(route('admin.media.update', $media), [
+        'alt_text' => '',
+        'consent_status' => '',
+        'caption' => 'Annual report',
+    ]);
+
+    $response->assertSessionDoesntHaveErrors(['alt_text', 'consent_status']);
+    $this->assertDatabaseHas('media', ['id' => $media->id, 'caption' => 'Annual report']);
+});
+
+test('the media index reports whether each item is an image', function () {
+    Media::factory()->create(['filename' => 'photo.jpg', 'path' => 'media/photo.jpg']);
+    Media::factory()->create(['filename' => 'report.pdf', 'path' => 'media/report.pdf', 'alt_text' => null, 'consent_status' => null]);
+    $editor = actingAsAdmin();
+
+    $response = $this->actingAs($editor)->get(route('admin.media.index'));
+
+    $items = collect($response->viewData('page')['props']['media']['data']);
+
+    expect($items->firstWhere('filename', 'photo.jpg')['is_image'])->toBeTrue();
+    expect($items->firstWhere('filename', 'report.pdf')['is_image'])->toBeFalse();
+});

@@ -92,6 +92,7 @@ Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(fu
         Route::get('audit-logs', [AdminAuditLogController::class, 'index'])->name('audit-logs.index');
         Route::get('media', [AdminMediaController::class, 'index'])->name('media.index');
         Route::get('media/picker', [AdminMediaController::class, 'picker'])->name('media.picker');
+        Route::put('media/{media}', [AdminMediaController::class, 'update'])->name('media.update');
         Route::delete('media/{media}', [AdminMediaController::class, 'destroy'])->name('media.destroy');
     });
 });

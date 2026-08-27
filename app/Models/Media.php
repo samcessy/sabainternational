@@ -78,4 +78,18 @@ class Media extends Model
     {
         return Storage::disk('public')->url($this->path);
     }
+
+    /**
+     * There's no stored mime_type column, so this is inferred from the
+     * saved file's extension - the same extension whitelist
+     * StoreMediaRequest validates against. Used post-upload (e.g. by
+     * UpdateMediaRequest) where there's no fresh UploadedFile to read a
+     * MIME type from directly.
+     */
+    public function isImage(): bool
+    {
+        $extension = strtolower(pathinfo($this->path, PATHINFO_EXTENSION));
+
+        return in_array($extension, ['jpg', 'jpeg', 'png', 'webp'], true);
+    }
 }
