@@ -34,6 +34,7 @@ use App\Http\Controllers\PartnershipInquiryController;
 use App\Http\Controllers\PartnershipPageController;
 use App\Http\Controllers\ProgramPageController;
 use App\Http\Controllers\RedirectResolutionController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StoryPageController;
 use App\Http\Controllers\VolunteerApplicationController;
 use App\Http\Controllers\VolunteerPageController;
@@ -57,6 +58,7 @@ Route::get('documents', [DocumentPageController::class, 'index'])->name('documen
 Route::get('documents/{document}', [DocumentPageController::class, 'show'])->name('documents.show');
 Route::get('events', [EventPageController::class, 'index'])->name('events.index');
 Route::get('events/{slug}', [EventPageController::class, 'show'])->name('events.show');
+Route::get('search', [SearchController::class, 'index'])->name('search.index');
 
 Route::middleware(['auth', 'verified', EnsureTwoFactorEnabled::class])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');

@@ -21,6 +21,7 @@ const publicPages = [
     'Contact',
     'Volunteer',
     'Partner',
+    'Search',
     'Error',
 ];
 

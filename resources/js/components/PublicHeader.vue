@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { Menu } from '@lucide/vue';
+import { Menu, Search } from '@lucide/vue';
 import { Button } from '@/components/ui/button';
 import {
     Sheet,
@@ -56,6 +56,17 @@ const navItems = [
             </nav>
 
             <div class="flex items-center gap-2">
+                <Button
+                    as-child
+                    variant="ghost"
+                    size="icon"
+                    class="min-h-11 min-w-11"
+                >
+                    <Link href="/search" aria-label="Search">
+                        <Search class="size-5" />
+                    </Link>
+                </Button>
+
                 <Button
                     as-child
                     variant="cta"
